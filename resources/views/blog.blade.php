@@ -10,6 +10,8 @@
     <a href="/about">about</a>
     <a href="/blog">blog</a>
     <a href="/contact">contact</a>
-    <h1>yahahahahayuk ini halaman about</h1>
+    <h1>RANG : Alternate Story </h1>
+    <p>Rang adalah seorang pria yang memiliki kekuatan luar biasa dan berjuang untuk melindungi dunia dari ancaman yang datang dari luar angkasa.</p>
+
 </body>
 </html>

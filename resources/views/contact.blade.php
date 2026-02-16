@@ -10,6 +10,7 @@
     <a href="/about">about</a>
     <a href="/blog">blog</a>
     <a href="/contact">contact</a>
-    <h1>yahahahahayuk ini halaman about</h1>
+    <h1>Hai nama saya inori nama kamu siapa?</h1>
+    <p>@inori.kay</p>
 </body>
 </html>

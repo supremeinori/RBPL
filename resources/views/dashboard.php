@@ -6,6 +6,7 @@
     <title>Dashboard aja</title>
 </head>
 <body>
+    <a href="/">Logout</a>
     <h1>Welcome to the Dashboard</h1>
 </body>
 </html>

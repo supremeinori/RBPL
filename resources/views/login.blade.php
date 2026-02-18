@@ -6,7 +6,7 @@
     <title>MR BONGKENG MANAGE SYSTEM</title>
 </head>
 <body>
-    <form action="/dashboard" method="get">
+    <form action="/dashboard" method="GET">
   <div class="imgcontainer">
     <img src="img_avatar2.png" alt="Avatar" class="avatar">
   </div>

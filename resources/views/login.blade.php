@@ -27,6 +27,12 @@
   <div class="container" style="background-color:#f1f1f1">
     <button type="button" class="cancelbtn">Cancel</button>
   </div>
+  <ul>
+  <li>admin = admin@mail.com (123456)</li>
+  <li>desainer = desainer@email.com (25506)</li>
+  <li>akuntan = akuntan@email.com (11226)</li>
+</ul>
+
 </form>
 </body>
 </html>

@@ -24,14 +24,14 @@ class UserSeeder extends Seeder
     User::create([
         'name' => 'Desainer',
         'email' => 'desainer@email.com',
-        'password' => Hash::make('25506'),
+        'password' => Hash::make('255061'),
         'role' => 'desainer',
     ]);
 
     User::create([
         'name' => 'Akuntan',
         'email' => 'akuntan@email.com',
-        'password' => Hash::make('11226'),
+        'password' => Hash::make('112262'),
         'role' => 'akuntan',
     ]);
     }

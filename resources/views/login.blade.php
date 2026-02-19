@@ -30,8 +30,8 @@
   </div>
   <ul>
   <li>admin = admin@mail.com (123456)</li>
-  <li>desainer = desainer@email.com (25506)</li>
-  <li>akuntan = akuntan@email.com (11226)</li>
+  <li>desainer = desainer@email.com (255061)</li>
+  <li>akuntan = akuntan@email.com (112262)</li>
 </ul>
 
 </form>

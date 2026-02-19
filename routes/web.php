@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -20,8 +20,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
-});
+})->name('login'); // ini buat ngasih nama route, 
+// biar gampang aksesnya, bisa juga pake url() atau route() di blade
 
-Route::get('/dashboard', function () {
-    return view('Dashboard\admin');
-});
+Route::post('/', [AuthController::class, 'login'] );
+
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard.admin');
+})->middleware('auth'); // ini untuk mastiin user yang bener udah login, 
+// nanti kita bisa tambahin middleware 
+// buat role admin, desainer, akuntan biar gak bisa diakses sama user yang bukan sesuai rolenya
+// entah apa lah ini
+Route::get('/desainer/dashboard', function () {
+    return view('desainer.dashboard.desainer');
+})->middleware('auth');
+
+Route::get('/akuntan/dashboard', function () {
+    return view('akuntan.dashboard.akuntan');
+})->middleware('auth');
+

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('tanggal_bayar');
             $table->string('bukti_kesepakatan_harga'); // Menyimpan nama path gambar bukti kesepakatan harga
             $table->string('bukti_pembayaran'); // Menyimpan nama path gambar bukti pembayaran
-            $table->enum('status_pembayaran', ['pending', 'lunas'])->default('pending');
+            $table->enum('status_verifikasi', ['pending', 'disetujui', 'ditolak'])->default('pending'); // ini sebenaranya status pembayaran tapi biar konsisten dengan desain dan pemesanan
             $table->timestamps();
         });
     }

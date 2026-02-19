@@ -6,17 +6,18 @@
     <title>MR BONGKENG MANAGE SYSTEM</title>
 </head>
 <body>
-    <form action="/dashboard" method="GET">
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
   <div class="imgcontainer">
     <img src="img_avatar2.png" alt="Avatar" class="avatar">
   </div>
 
   <div class="container" style="width:300px">
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+    <label for="uname"><b>Email</b></label>
+    <input type="email" placeholder="Enter email" name="email" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="password" required>
 
     <button type="submit">Login</button>
     <label>

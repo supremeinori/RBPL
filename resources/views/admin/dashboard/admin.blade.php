@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard aja</title>
+    <title>Dashboard Admin</title>
 </head>
 <body>
     <a href="/">Logout</a>
+    <a href="/admin/users">KELOLA USER</a>
     <h1>Welcome to the Dashboard Admin</h1>
 </body>
 </html>

@@ -40,6 +40,8 @@ class AuthController extends Controller
             return redirect()->intended('/akuntan/dashboard/');
         }
 
+        
+
         return redirect()->intended('/'); // ini buat redirect ke dashboard setelah login
     }
     return back()->withErrors([

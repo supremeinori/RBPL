@@ -6,12 +6,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
+    use SoftDeletes; // ini buat soft delete, jadi data gak langsung kehapus dari database, tapi di mark sebagai deleted, biar bisa di restore lagi kalau salah hapus
     /**
      * The attributes that are mass assignable.
      *

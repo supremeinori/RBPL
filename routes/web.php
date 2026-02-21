@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\UserManagementController;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -40,3 +41,10 @@ Route::get('/akuntan/dashboard', function () {
     return view('akuntan.dashboard.akuntan');
 })->middleware('auth');
 
+Route::middleware(['auth', 'role:admin'])->prefix('admin')
+->name('admin.')        
+->group(function () {
+    Route::resource('users', UserManagementController::class); 
+    // ini buat ngasih resource route untuk user management, 
+    // nanti kita bakal buat controller dan viewnya buat manage user, kayak tambah user, edit user, hapus user, dll
+});

@@ -31,17 +31,17 @@ Route::post('/', [AuthController::class, 'login'] );
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.admin');
-})->middleware('auth'); // ini untuk mastiin user yang bener udah login, 
+})->middleware(['auth', 'role:admin']); // ini untuk mastiin user yang bener udah login, 
 // nanti kita bisa tambahin middleware 
 // buat role admin, desainer, akuntan biar gak bisa diakses sama user yang bukan sesuai rolenya
 // entah apa lah ini
 Route::get('/desainer/dashboard', function () {
     return view('desainer.dashboard.desainer');
-})->middleware('auth');
+})->middleware(['auth', 'role:desainer']);
 
 Route::get('/akuntan/dashboard', function () {
     return view('akuntan.dashboard.akuntan');
-})->middleware('auth');
+})->middleware(['auth', 'role:akuntan']);
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')
 ->name('admin.')        

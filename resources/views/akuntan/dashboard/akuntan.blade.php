@@ -6,7 +6,9 @@
     <title>Dashboard aja</title>
 </head>
 <body>
-    <a href="/">Logout</a>
+    <form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit">Logout</button>
     <h1>Welcome to the Dashboard Akuntan </h1>
 </body>
 </html>

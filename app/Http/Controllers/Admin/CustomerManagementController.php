@@ -9,8 +9,6 @@ use App\Models\customer;
 class CustomerManagementController extends Controller
 {   
     
-
-    dd('masuk customers index');
     public function index()
     {
         $customers = customer::latest()->get(); // ini untuk bikin filter soft delete

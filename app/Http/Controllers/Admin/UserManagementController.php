@@ -21,6 +21,7 @@ class UserManagementController extends Controller
     return view('admin.users.create');
 }
 
+
     public function store(Request $request)
     {
         $request->validate([
@@ -39,4 +40,49 @@ class UserManagementController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
     }
+
+   public function edit(User $user)
+    {
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:6',
+            'role' => 'required|in:admin,desainer,akuntan',
+        ]);
+
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+
+        if ($request->password) {
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil diperbarui.');
+    }
+
+    public function destroy(User $user)
+{
+    // Cegah admin utama (misal ID = 1)
+    if ($user->id == 1) {
+        return redirect()->route('admin.users.index')
+            ->with('error', 'Admin utama tidak bisa dihapus.');
+    }
+
+    $user->delete(); // ini otomatis soft delete
+
+    return redirect()->route('admin.users.index')
+        ->with('success', 'User berhasil dihapus.');
+}
+
 }

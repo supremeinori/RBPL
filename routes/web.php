@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserManagementController;
+use Illuminate\Support\Facades\Auth;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -48,3 +49,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')
     // ini buat ngasih resource route untuk user management, 
     // nanti kita bakal buat controller dan viewnya buat manage user, kayak tambah user, edit user, hapus user, dll
 });
+
+
+// LOGOUT
+Route::post('/logout', function () {
+    Auth::logout();
+
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+
+    return redirect()->route('login');
+})->name('logout');

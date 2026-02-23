@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\order;
 
 class customer extends Model
 {
@@ -12,4 +13,9 @@ class customer extends Model
         'alamat',
         'no_telp',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

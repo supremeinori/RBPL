@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\CustomerManagementController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\OrderManagementController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -29,12 +31,17 @@ Route::get('/', function () {
 Route::post('/', [AuthController::class, 'login'] );
 
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard.admin');
-})->middleware(['auth', 'role:admin']); // ini untuk mastiin user yang bener udah login, 
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'] )->middleware(['auth', 'role:admin']); 
+
+
+
+
+// ini untuk mastiin user yang bener udah login, 
 // nanti kita bisa tambahin middleware 
 // buat role admin, desainer, akuntan biar gak bisa diakses sama user yang bukan sesuai rolenya
 // entah apa lah ini
+
+
 Route::get('/desainer/dashboard', function () {
     return view('desainer.dashboard.desainer');
 })->middleware(['auth', 'role:desainer']);
@@ -48,6 +55,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')
 ->group(function () {
     Route::resource('users', UserManagementController::class); 
     Route::resource('customers', CustomerManagementController::class);
+    Route::resource('orders', OrderManagementController::class);
+    
     // ini buat ngasih resource route untuk user management, 
     // nanti kita bakal buat controller dan viewnya buat manage user, kayak tambah user, edit user, hapus user, dll
 });

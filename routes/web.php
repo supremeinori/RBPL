@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\CustomerManagementController;
 use Illuminate\Support\Facades\Auth;
 // Route::get('/', function () {
 //     return view('home');
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')
 ->name('admin.')        
 ->group(function () {
     Route::resource('users', UserManagementController::class); 
+    Route::resource('customers', CustomerManagementController::class);
     // ini buat ngasih resource route untuk user management, 
     // nanti kita bakal buat controller dan viewnya buat manage user, kayak tambah user, edit user, hapus user, dll
 });
@@ -60,3 +62,4 @@ Route::post('/logout', function () {
 
     return redirect()->route('login');
 })->name('logout');
+

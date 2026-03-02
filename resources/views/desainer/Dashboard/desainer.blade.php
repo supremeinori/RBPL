@@ -10,5 +10,6 @@
     @csrf
     <button type="submit">Logout</button>
     <h1>Welcome to the Dashboard Desainer </h1>
+    data Desainer
 </body>
 </html>

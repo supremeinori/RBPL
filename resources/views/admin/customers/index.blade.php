@@ -6,6 +6,9 @@
     <title>Document</title>
 </head>
 <body>
+    
+    
+<a href="/admin/dashboard">DASHBOARD</a>
     <h2>Kelola Pelanggan</h2>
 
 <a href="{{ route('admin.customers.create') }}">Tambah Pelanggan</a>
@@ -20,7 +23,7 @@
 
     @forelse($customers as $customer)
 <tr>
-    <td>{{ $customer->id }}</td>
+    <td>{{ $customer->id_pelanggan }}</td>
         <td>{{ $customer->nama }}</td>
         <td>{{ $customer->alamat }}</td>
     <td>{{ $customer->no_telp }}</td>

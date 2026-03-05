@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\order;
+use App\Models\Order;
 
-class customer extends Model
+class Customer extends Model
 {
-    protected $table = 'pelanggan'; // pastikan nama tabel sesuai dengan yang ada di database
+    protected $table = 'pelanggan';
+
     protected $fillable = [
-        'nama', // ini harus sesuai dengan nama kolom di database ? 
+        'id_pelanggan',
+        'nama',
         'alamat',
         'no_telp',
     ];
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'id_pelanggan');
     }
 }

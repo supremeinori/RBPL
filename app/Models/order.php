@@ -12,7 +12,7 @@ class order extends Model
     protected $fillable = [
         'nama_pesanan', // ini harus sesuai dengan nama kolom di database ?
         'tanggal_pemesanan',
-        // 'customer_id',
+        'id_pelanggan',
         'status_pemesanan',
         'deskripsi_pesanan',
         'deadline',

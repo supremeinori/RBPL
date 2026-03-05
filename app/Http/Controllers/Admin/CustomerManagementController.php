@@ -21,16 +21,22 @@ class CustomerManagementController extends Controller
         return view('admin.customers.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'alamat' => 'required',
-            'no_telp' => 'required',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'nama' => 'required',
+        'alamat' => 'required',
+        'no_telp' => 'required',
+    ]);
 
-        customer::create($request->all());
+    Customer::create([
+        'nama' => $request->nama,
+        'alamat' => $request->alamat,
+        'no_telp' => $request->no_telp
+    ]);
 
-        return redirect()->route('admin.customers.index')->with('success', 'Customer berhasil ditambahkan.');
-    }
+    return redirect()
+        ->route('admin.customers.index')
+        ->with('success', 'Customer berhasil ditambahkan.');
+}
 }

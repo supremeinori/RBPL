@@ -1,502 +1,318 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — MR BONGKENG MANAGE SYSTEM</title>
-    <meta name="description" content="Sign in to MR BONGKENG Manage System">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+@extends('layouts.guest')
 
-        :root {
-            --black:       #0a0a0a;
-            --dark:        #111111;
-            --mid:         #1c1c1c;
-            --border:      #2a2a2a;
-            --muted:       #555555;
-            --subtle:      #888888;
-            --light:       #d4d4d4;
-            --white:       #ffffff;
-            --accent:      #ffffff;
-            --radius:      14px;
-            --transition:  0.25s ease;
-        }
+@section('title', 'Login — MR BONGKENG')
 
-        html, body {
-            height: 100%;
-            font-family: 'Inter', sans-serif;
-        }
+@section('styles')
+<style>
+    /* ── Login Card ── */
+    .card {
+        background: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        padding: 48px 40px 40px;
+        box-shadow:
+            0 0 0 1px rgba(255,255,255,0.04) inset,
+            0 40px 80px rgba(0,0,0,0.6),
+            0 8px 24px rgba(0,0,0,0.4);
+        animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
 
-        body {
-            background-color: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0);    }
+    }
 
-        /* ── Decorative background grid ── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 48px 48px;
-            pointer-events: none;
-            z-index: 0;
-        }
+    /* ── Brand ── */
+    .brand {
+        text-align: center;
+        margin-bottom: 36px;
+    }
 
-        /* ── Glow orbs ── */
-        body::after {
-            content: '';
-            position: fixed;
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
+    .brand-icon {
+        width: 52px;
+        height: 52px;
+        background: var(--white);
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+    }
 
-        /* ── Login Card ── */
-        .login-wrapper {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 420px;
-            padding: 16px;
-        }
+    .brand-icon svg {
+        width: 26px;
+        height: 26px;
+        color: var(--black);
+    }
 
-        .card {
-            background: var(--dark);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 48px 40px 40px;
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.04) inset,
-                0 40px 80px rgba(0,0,0,0.6),
-                0 8px 24px rgba(0,0,0,0.4);
-            animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
-        }
+    .brand h1 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--white);
+        letter-spacing: -0.3px;
+        line-height: 1.2;
+    }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0);    }
-        }
+    .brand p {
+        margin-top: 6px;
+        font-size: 13.5px;
+        color: var(--subtle);
+        font-weight: 400;
+    }
 
-        /* ── Brand ── */
-        .brand {
-            text-align: center;
-            margin-bottom: 36px;
-        }
+    /* ── Flash messages ── */
+    .alert {
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 13.5px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .brand-icon {
-            width: 52px;
-            height: 52px;
-            background: var(--white);
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
-        }
+    .alert-error {
+        background: rgba(239,68,68,0.1);
+        border: 1px solid rgba(239,68,68,0.25);
+        color: #fca5a5;
+    }
 
-        .brand-icon svg {
-            width: 26px;
-            height: 26px;
-            color: var(--black);
-        }
+    .alert-success {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: var(--light);
+    }
 
-        .brand h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--white);
-            letter-spacing: -0.3px;
-            line-height: 1.2;
-        }
+    /* ── Form ── */
+    .form-group {
+        margin-bottom: 18px;
+    }
 
-        .brand p {
-            margin-top: 6px;
-            font-size: 13.5px;
-            color: var(--subtle);
-            font-weight: 400;
-        }
+    label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--light);
+        margin-bottom: 8px;
+        letter-spacing: 0.01em;
+    }
 
-        /* ── Flash messages ── */
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 13.5px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .input-wrap {
+        position: relative;
+    }
 
-        .alert-error {
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.25);
-            color: #fca5a5;
-        }
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        width: 16px;
+        height: 16px;
+        transition: color var(--transition);
+        pointer-events: none;
+    }
 
-        .alert-success {
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: var(--light);
-        }
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 13px 14px 13px 42px;
+        background: var(--mid);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--white);
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
 
-        /* ── Form ── */
-        .form-group {
-            margin-bottom: 18px;
-        }
+    input[type="email"]::placeholder,
+    input[type="password"]::placeholder {
+        color: var(--muted);
+    }
 
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--light);
-            margin-bottom: 8px;
-            letter-spacing: 0.01em;
-        }
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+        border-color: rgba(255,255,255,0.4);
+        background: #222222;
+        box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
 
-        .input-wrap {
-            position: relative;
-        }
+    .input-wrap:focus-within .input-icon {
+        color: var(--light);
+    }
 
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--muted);
-            width: 16px;
-            height: 16px;
-            transition: color var(--transition);
-            pointer-events: none;
-        }
+    /* ── Toggle Password ── */
+    .toggle-pw {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--muted);
+        padding: 4px;
+        line-height: 0;
+        transition: color var(--transition);
+    }
 
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 13px 14px 13px 42px;
-            background: var(--mid);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--white);
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
-        }
+    .toggle-pw:hover { color: var(--light); }
 
-        input[type="email"]::placeholder,
-        input[type="password"]::placeholder {
-            color: var(--muted);
-        }
+    /* ── Options row ── */
+    .options-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        margin-top: 2px;
+    }
 
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            border-color: rgba(255,255,255,0.4);
-            background: #222222;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
-        }
+    .remember {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        user-select: none;
+    }
 
-        input[type="email"]:focus + .focus-border,
-        input[type="password"]:focus + .focus-border {
-            opacity: 1;
-        }
+    .remember input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--white);
+        cursor: pointer;
+    }
 
-        .input-wrap:focus-within .input-icon {
-            color: var(--light);
-        }
+    .remember span {
+        font-size: 13px;
+        color: var(--subtle);
+    }
 
-        /* ── Toggle Password ── */
-        .toggle-pw {
-            position: absolute;
-            right: 13px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--muted);
-            padding: 4px;
-            line-height: 0;
-            transition: color var(--transition);
-        }
+    /* ── Submit Button ── */
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        background: var(--white);
+        color: var(--black);
+        border: none;
+        border-radius: var(--radius);
+        font-size: 14.5px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        letter-spacing: 0.01em;
+        transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+        box-shadow: 0 4px 16px rgba(255,255,255,0.15);
+    }
 
-        .toggle-pw:hover { color: var(--light); }
+    .btn-login:hover {
+        background: #e8e8e8;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(255,255,255,0.2);
+    }
 
-        /* ── Options row ── */
-        .options-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            margin-top: 2px;
-        }
+    .btn-login:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+    }
 
-        .remember {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            user-select: none;
-        }
+    /* ── Footer ── */
+    .card-footer {
+        margin-top: 28px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+    }
+</style>
+@endsection
 
-        .remember input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--white);
-            cursor: pointer;
-        }
+@section('content')
+<div class="card">
+    {{-- Brand --}}
+    <div class="brand">
+        <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+        </div>
+        <h1>MR BONGKENG</h1>
+        <p>Manage System — Sign in to continue</p>
+    </div>
 
-        .remember span {
-            font-size: 13px;
-            color: var(--subtle);
-        }
+    {{-- Flash Messages --}}
+    @if ($errors->any())
+        <div class="alert alert-error">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ $errors->first() }}
+        </div>
+    @endif
 
-        /* ── Submit Button ── */
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            background: var(--white);
-            color: var(--black);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14.5px;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            letter-spacing: 0.01em;
-            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-            box-shadow: 0 4px 16px rgba(255,255,255,0.15);
-        }
+    @if (session('status'))
+        <div class="alert alert-success">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            {{ session('status') }}
+        </div>
+    @endif
 
-        .btn-login:hover {
-            background: #e8e8e8;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(255,255,255,0.2);
-        }
+    {{-- Login Form --}}
+    <form action="{{ route('login') }}" method="POST">
+        @csrf
 
-        .btn-login:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(255,255,255,0.1);
-        }
-
-        /* ── Divider ── */
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .divider span {
-            font-size: 12px;
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        /* ── Demo credentials ── */
-        .credentials {
-            background: var(--mid);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 14px 16px;
-        }
-
-        .credentials-title {
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--subtle);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 10px;
-        }
-
-        .cred-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .cred-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .cred-item:first-of-type {
-            padding-top: 0;
-        }
-
-        .cred-role {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--white);
-            min-width: 70px;
-        }
-
-        .cred-email {
-            font-size: 11.5px;
-            color: var(--subtle);
-            flex: 1;
-            text-align: center;
-        }
-
-        .cred-pass {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--light);
-            background: var(--border);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* ── Footer ── */
-        .card-footer {
-            margin-top: 28px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--muted);
-        }
-    </style>
-</head>
-<body>
-
-<div class="login-wrapper">
-    <div class="card">
-
-        {{-- Brand --}}
-        <div class="brand">
-            <div class="brand-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    value="{{ old('email') }}"
+                    autocomplete="email"
+                    required
+                    autofocus
+                >
             </div>
-            <h1>MR BONGKENG</h1>
-            <p>Manage System — Sign in to continue</p>
         </div>
 
-        {{-- Flash Messages --}}
-        @if ($errors->any())
-            <div class="alert alert-error">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                {{ $errors->first() }}
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+                <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
+                    <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
             </div>
-        @endif
-
-        @if (session('status'))
-            <div class="alert alert-success">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                {{ session('status') }}
-            </div>
-        @endif
-
-        {{-- Login Form --}}
-        <form action="{{ route('login') }}" method="POST">
-            @csrf
-
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <div class="input-wrap">
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        placeholder="you@example.com"
-                        value="{{ old('email') }}"
-                        autocomplete="email"
-                        required
-                        autofocus
-                    >
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrap">
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
-                    >
-                    <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
-                        <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="options-row">
-                <label class="remember">
-                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <span>Remember me</span>
-                </label>
-            </div>
-
-            <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
-        </form>
-
-        <div class="divider">
-            <span>Demo Credentials</span>
         </div>
 
-        <!-- {{-- Demo credentials --}}
-        <div class="credentials">
-            <div class="credentials-title">Available Accounts</div>
-            <div class="cred-item">
-                <span class="cred-role">Admin</span>
-                <span class="cred-email">admin@mail.com</span>
-                <span class="cred-pass">123456</span>
-            </div>
-            <div class="cred-item">
-                <span class="cred-role">Desainer</span>
-                <span class="cred-email">desainer@email.com</span>
-                <span class="cred-pass">255061</span>
-            </div>
-            <div class="cred-item">
-                <span class="cred-role">Akuntan</span>
-                <span class="cred-email">akuntan@email.com</span>
-                <span class="cred-pass">112262</span>
-            </div>
-        </div> -->
-
-        <div class="card-footer">
-            &copy; {{ date('Y') }} MR BONGKENG Manage System
+        <div class="options-row">
+            <label class="remember">
+                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                <span>Remember me</span>
+            </label>
         </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
+    </form>
+
+    <div class="card-footer">
+        &copy; {{ date('Y') }} MR BONGKENG Manage System
     </div>
 </div>
+@endsection
 
+@section('scripts')
 <script>
     // Toggle password visibility
     const togglePw = document.getElementById('togglePw');
@@ -522,6 +338,4 @@
         loginBtn.style.opacity = '0.7';
     });
 </script>
-
-</body>
-</html>
+@endsection

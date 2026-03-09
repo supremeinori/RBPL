@@ -14,7 +14,7 @@ class order extends Model
         'tanggal_pemesanan',
         'id_pelanggan',
         'status_pemesanan',
-        'deskripsi_pesanan',
+        'deskripsi_pemesanan',
         'deadline',
     ];
 

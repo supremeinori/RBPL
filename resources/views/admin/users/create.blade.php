@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Tambah User</h2>
-
+    <a href="{{ route('admin.users.index') }}">Back</a>
 @if ($errors->any())
     <ul>
         @foreach ($errors->all() as $error)

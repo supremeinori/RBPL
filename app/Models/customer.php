@@ -8,9 +8,9 @@ use App\Models\Order;
 class Customer extends Model
 {
     protected $table = 'pelanggan';
-
+    protected $primaryKey = 'id_pelanggan';
     protected $fillable = [
-        'id_pelanggan',
+        // 'id_pelanggan',
         'nama',
         'alamat',
         'no_telp',

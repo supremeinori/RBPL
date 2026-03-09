@@ -19,6 +19,7 @@
         <th>Nama</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>Aksi</th>
     </tr>
 
     @forelse($customers as $customer)
@@ -27,6 +28,14 @@
         <td>{{ $customer->nama }}</td>
         <td>{{ $customer->alamat }}</td>
     <td>{{ $customer->no_telp }}</td>
+    <td>
+        <a href="{{ route('admin.customers.edit', $customer->id_pelanggan) }}">Edit</a>
+        <!-- <form action="{{ route('admin.customers.destroy', $customer->id_pelanggan) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+        </form> --> <!-- Hapus tombol delete untuk sementara -->
+    </td>
 </tr>
 @empty
 <tr>

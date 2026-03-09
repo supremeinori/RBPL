@@ -20,6 +20,7 @@ class CustomerManagementController extends Controller
     {
         return view('admin.customers.create');
     }
+   
 
    public function store(Request $request)
 {
@@ -39,4 +40,28 @@ class CustomerManagementController extends Controller
         ->route('admin.customers.index')
         ->with('success', 'Customer berhasil ditambahkan.');
 }
+
+ public function edit(customer $customer)
+    {
+        return view('admin.customers.edit', compact('customer'));
+    }
+
+    public function update(Request $request, customer $customer)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+        ]);
+
+        $customer->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp
+        ]);
+
+        return redirect()
+            ->route('admin.customers.index')
+            ->with('success', 'Customer berhasil diperbarui.');
+    }
 }

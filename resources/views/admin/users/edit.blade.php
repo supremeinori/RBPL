@@ -7,15 +7,14 @@
 </head>
 <body>
     <h2>EDIT USER</h2>
-    <h2>EDIT USER</h2>
-
+    <a href="{{ route('admin.users.index') }}">Back</a>
 <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
     @csrf
     @method('PUT')
 
     <input type="text" name="name" value="{{ old('name', $user->name) }}">
-    <input type="email" name="email" value="{{ old('email', $user->email) }}">
-
+    <input type="email" name="email" value="{{ old('email', $user->email) }}" readonly>
+    <input type="password" name="password" placeholder="Kosongkan jika tidak ingin mengubah password">
     <select name="role">
         <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
         <option value="desainer" {{ $user->role == 'desainer' ? 'selected' : '' }}>Desainer</option>

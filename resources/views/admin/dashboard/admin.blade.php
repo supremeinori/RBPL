@@ -697,6 +697,7 @@
                                         Status {!! request('sort') == 'status' ? (request('direction') == 'asc' ? '↑' : '↓') : '' !!}
                                     </a>
                                 </th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -707,6 +708,7 @@
                                 <td>{{ $order->customer->nama }}</td>
                                 <td>{{ $order->tanggal_pemesanan }}</td>
                                 <td>{{ $order->deadline }}</td>
+
                                 <td>
                                     @php
                                         $badgeClass = match(strtolower($order->status_pemesanan)) {
@@ -717,10 +719,11 @@
                                     @endphp
                                     <span class="badge {{ $badgeClass }}">{{ $order->status_pemesanan }}</span>
                                 </td>
+                                <td>aksi</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">
+                                <td colspan="7">
                                     <div class="empty-state">
                                         <p>Data pemesanan masih kosong.</p>
                                         <a href="{{ route('admin.orders.create') }}" class="btn-add">

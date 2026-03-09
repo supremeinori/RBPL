@@ -53,12 +53,10 @@ Route::get('/akuntan/dashboard', function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')
 ->name('admin.')        
 ->group(function () {
+    Route::get('customers/search', [CustomerManagementController::class, 'searchApi'])->name('customers.search');
     Route::resource('users', UserManagementController::class); 
     Route::resource('customers', CustomerManagementController::class);
     Route::resource('orders', OrderManagementController::class);
-    
-    // ini buat ngasih resource route untuk user management, 
-    // nanti kita bakal buat controller dan viewnya buat manage user, kayak tambah user, edit user, hapus user, dll
 });
 
 

@@ -9,16 +9,44 @@ use App\Models\Customer;
 
 class OrderManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('customer')->latest()->get();
+        $query = Order::with('customer');
+
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_pesanan', 'like', "%{$search}%")
+                  ->orWhere('status_pemesanan', 'like', "%{$search}%")
+                  ->orWhere('deadline', 'like', "%{$search}%")
+                  ->orWhere('tanggal_pemesanan', 'like', "%{$search}%")
+                  ->orWhereHas('customer', function($q) use ($search) {
+                      $q->where('nama', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'created_at');
+        $direction = $request->get('direction', 'desc');
+        
+        $sortField = match($sort) {
+            'deadline' => 'deadline',
+            'date' => 'tanggal_pemesanan',
+            'status' => 'status_pemesanan',
+            'name' => 'nama_pesanan',
+            default => 'created_at'
+        };
+
+        $orders = $query->orderBy($sortField, $direction)->paginate(10)->withQueryString();
 
         return view('admin.dashboard.admin', compact('orders'));
     }
 
     public function create()
     {
-        $customers = Customer::all();
+        $customers = Customer::limit(5)->get();
 
         return view('admin.orders.create', compact('customers'));
     }

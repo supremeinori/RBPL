@@ -372,6 +372,116 @@
             font-size: 14px;
             margin-bottom: 16px;
         }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            background: var(--mid);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 4px 12px;
+            transition: border-color var(--transition);
+        }
+
+        .search-form:focus-within {
+            border-color: var(--subtle);
+        }
+
+        .search-form input {
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 13px;
+            padding: 6px 0;
+            width: 180px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-form input:focus {
+            outline: none;
+        }
+
+        .search-form svg {
+            width: 14px;
+            height: 14px;
+            color: var(--muted);
+            margin-right: 8px;
+        }
+
+        .sort-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sort-link:hover {
+            color: var(--white);
+        }
+
+        .pagination-wrap {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Essential Pagination Styles */
+        nav[role="navigation"] {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        nav[role="navigation"] .flex.justify-between {
+            display: none;
+        }
+
+        nav[role="navigation"] .hidden.sm\:flex-1 {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .pagination-info {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .pagination-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pagination-links a, .pagination-links span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 34px;
+            padding: 0 8px;
+            background: var(--mid);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--subtle);
+            text-decoration: none;
+            font-size: 13px;
+            transition: all var(--transition);
+        }
+
+        .pagination-links span[aria-current="page"] {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+            font-weight: 600;
+        }
+
+        .pagination-links a:hover {
+            border-color: var(--subtle);
+            color: var(--white);
+        }
     </style>
 </head>
 <body>
@@ -458,12 +568,22 @@
             <div class="section-card">
                 <div class="section-header">
                     <span class="section-title">Daftar Pelanggan</span>
-                    <a href="{{ route('admin.customers.create') }}" class="btn-add">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        Tambah Pelanggan
-                    </a>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <form action="{{ url()->current() }}" method="GET" class="search-form">
+                            <input type="hidden" name="sort" value="{{ request('sort') }}">
+                            <input type="hidden" name="direction" value="{{ request('direction') }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            <input type="text" name="search" placeholder="Cari pelanggan..." value="{{ request('search') }}">
+                        </form>
+                        <a href="{{ route('admin.customers.create') }}" class="btn-add">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Tambah Pelanggan
+                        </a>
+                    </div>
                 </div>
 
                 <div class="table-wrap">
@@ -471,7 +591,11 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nama</th>
+                                <th>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'nama', 'direction' => request('sort') == 'nama' && request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="sort-link">
+                                        Nama {!! request('sort') == 'nama' ? (request('direction') == 'asc' ? '↑' : '↓') : '' !!}
+                                    </a>
+                                </th>
                                 <th>Alamat</th>
                                 <th>No Telp</th>
                                 <th style="text-align: right;">Aksi</th>
@@ -508,6 +632,12 @@
                         </tbody>
                     </table>
                 </div>
+
+                @if($customers->count() > 0 && method_exists($customers, 'links'))
+                <div class="pagination-wrap">
+                    {{ $customers->links() }}
+                </div>
+                @endif
             </div>
         </div>
     </div>

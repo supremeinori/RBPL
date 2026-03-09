@@ -443,6 +443,99 @@
             font-weight: 700;
             cursor: pointer;
         }
+
+        /* ── Searchable Select ── */
+        .custom-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-search-wrap {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-top: 6px;
+            z-index: 50;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            display: none;
+            overflow: hidden;
+            animation: dropdownFade 0.2s ease;
+        }
+
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .select-search-input-wrap {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            background: var(--mid);
+        }
+
+        .select-search-input {
+            width: 100%;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--white);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .select-search-input:focus {
+            outline: none;
+            border-color: var(--subtle);
+        }
+
+        .select-options-list {
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar */
+        .select-options-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .select-options-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .select-options-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .select-option {
+            padding: 10px 16px;
+            font-size: 13.5px;
+            color: var(--light);
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+
+        .select-option:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .select-option.selected {
+            background: var(--mid);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .select-loading {
+            padding: 14px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -541,14 +634,29 @@
                                 <div class="form-group">
                                     <label class="form-label">Pelanggan</label>
                                     <div class="input-group">
-                                        <select id="customerSelect" name="id_pelanggan" class="form-control" required>
-                                            <option value="">Pilih Pelanggan</option>
-                                            @foreach($customers as $customer)
-                                                <option value="{{ $customer->id_pelanggan }}">
-                                                    {{ $customer->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="custom-select-container">
+                                            <input type="hidden" name="id_pelanggan" id="hiddenCustomerInput" required>
+                                            <div id="selectTrigger" class="form-control" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                                                <span id="selectedCustomerText">Pilih Pelanggan</span>
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; opacity: 0.5;">
+                                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                                </svg>
+                                            </div>
+                                            
+                                            <div id="selectDropdown" class="select-search-wrap">
+                                                <div class="select-search-input-wrap">
+                                                    <input type="text" id="customerSearchInput" class="select-search-input" placeholder="Cari nama pelanggan..." autocomplete="off">
+                                                </div>
+                                                <div id="selectLoading" class="select-loading">Mencari...</div>
+                                                <div id="optionsList" class="select-options-list">
+                                                    @foreach($customers as $customer)
+                                                        <div class="select-option" data-id="{{ $customer->id_pelanggan }}" data-nama="{{ $customer->nama }}">
+                                                            {{ $customer->nama }}
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
                                         <button type="button" class="btn-inline" onclick="openModal()">
                                             + Baru
                                         </button>
@@ -663,12 +771,8 @@
         .then(res => res.json())
         .then(data => {
             if(data.id_pelanggan) {
-                let select = document.getElementById("customerSelect");
-                let option = document.createElement("option");
-                option.value = data.id_pelanggan;
-                option.text = data.nama;
-                select.add(option);
-                select.value = data.id_pelanggan;
+                // Select the new customer
+                selectCustomer(data.id_pelanggan, data.nama);
 
                 // Clear fields
                 document.getElementById("modal_nama").value = "";
@@ -685,6 +789,91 @@
             alert("Terjadi kesalahan sistem");
         });
     }
+
+    // ── Searchable Dropdown Logic ──
+    const selectTrigger = document.getElementById('selectTrigger');
+    const selectDropdown = document.getElementById('selectDropdown');
+    const customerSearchInput = document.getElementById('customerSearchInput');
+    const hiddenCustomerInput = document.getElementById('hiddenCustomerInput');
+    const selectedCustomerText = document.getElementById('selectedCustomerText');
+    const optionsList = document.getElementById('optionsList');
+    const selectLoading = document.getElementById('selectLoading');
+
+    // Toggle dropdown
+    selectTrigger.addEventListener('click', () => {
+        const isOpen = selectDropdown.style.display === 'block';
+        selectDropdown.style.display = isOpen ? 'none' : 'block';
+        if (!isOpen) customerSearchInput.focus();
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!selectTrigger.contains(e.target) && !selectDropdown.contains(e.target)) {
+            selectDropdown.style.display = 'none';
+        }
+    });
+
+    // Handle option selection
+    optionsList.addEventListener('click', (e) => {
+        const option = e.target.closest('.select-option');
+        if (option) {
+            const id = option.dataset.id;
+            const nama = option.dataset.nama;
+            selectCustomer(id, nama);
+            selectDropdown.style.display = 'none';
+        }
+    });
+
+    function selectCustomer(id, nama) {
+        hiddenCustomerInput.value = id;
+        selectedCustomerText.innerText = nama;
+        
+        // Mark as selected in UI
+        document.querySelectorAll('.select-option').forEach(opt => {
+            opt.classList.toggle('selected', opt.dataset.id == id);
+        });
+    }
+
+    // AJAX Search
+    let searchTimeout;
+    customerSearchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        const q = e.target.value;
+
+        searchTimeout = setTimeout(() => {
+            if (q.length < 1) {
+                // If cleared, we don't necessarily show only 5 again, 
+                // but let's just keep the last results or reset for simplicity
+                return;
+            }
+
+            selectLoading.style.display = 'block';
+            optionsList.style.opacity = '0.5';
+
+            fetch("{{ route('admin.customers.search') }}?q=" + encodeURIComponent(q))
+                .then(res => res.json())
+                .then(data => {
+                    optionsList.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(customer => {
+                            const opt = document.createElement('div');
+                            opt.className = 'select-option';
+                            opt.dataset.id = customer.id_pelanggan;
+                            opt.dataset.nama = customer.nama;
+                            opt.innerText = customer.nama;
+                            if (hiddenCustomerInput.value == customer.id_pelanggan) opt.classList.add('selected');
+                            optionsList.appendChild(opt);
+                        });
+                    } else {
+                        optionsList.innerHTML = '<div style="padding: 14px; text-align: center; font-size: 13px; color: var(--muted);">Tidak ada hasil</div>';
+                    }
+                })
+                .finally(() => {
+                    selectLoading.style.display = 'none';
+                    optionsList.style.opacity = '1';
+                });
+        }, 300);
+    });
 </script>
 
 </body>

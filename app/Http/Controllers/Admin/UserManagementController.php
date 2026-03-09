@@ -9,9 +9,25 @@ use Illuminate\Support\Facades\Hash;
 
 class UserManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->get(); // ini untuk bikin filter soft delete
+        $query = User::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $sort = $request->get('sort', 'name');
+        $direction = $request->get('direction', 'asc');
+
+        $sortField = match($sort) {
+            'name' => 'name',
+            'role' => 'role',
+            default => 'name'
+        };
+
+        $users = $query->orderBy($sortField, $direction)->paginate(10)->withQueryString();
 
         return view('admin.users.index', compact('users'));
     }

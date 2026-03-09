@@ -9,9 +9,25 @@ use App\Models\customer;
 class CustomerManagementController extends Controller
 {   
     
-    public function index()
+    public function index(Request $request)
     {
-        $customers = customer::latest()->get(); // ini untuk bikin filter soft delete
+        $query = customer::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama', 'like', "%{$search}%");
+        }
+
+        $sort = $request->get('sort', 'nama');
+        $direction = $request->get('direction', 'asc');
+
+        $sortField = match($sort) {
+            'nama' => 'nama',
+            'created' => 'created_at',
+            default => 'nama'
+        };
+
+        $customers = $query->orderBy($sortField, $direction)->paginate(10)->withQueryString();
         
         return view('admin.customers.index', compact('customers'));
     }
@@ -63,5 +79,15 @@ class CustomerManagementController extends Controller
         return redirect()
             ->route('admin.customers.index')
             ->with('success', 'Customer berhasil diperbarui.');
+    }
+
+    public function searchApi(Request $request)
+    {
+        $search = $request->get('q');
+        $customers = Customer::where('nama', 'like', "%{$search}%")
+            ->limit(10)
+            ->get(['id_pelanggan', 'nama']);
+
+        return response()->json($customers);
     }
 }

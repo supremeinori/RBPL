@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CustomerManagementController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\OrderManagementController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\DesainController;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -69,4 +70,7 @@ Route::post('/logout', function () {
 
     return redirect()->route('login');
 })->name('logout');
+
+Route::get('/admin/desain/create/{id}', [DesainController::class, 'create'])->name('admin.desain.create');
+Route::post('/admin/desain/store/{id}', [DesainController::class, 'store'])->name('admin.desain.store');
 

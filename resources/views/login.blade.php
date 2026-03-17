@@ -400,7 +400,7 @@
                 </svg>
             </div>
             <h1>MR BONGKENG</h1>
-            <p>Manage System — Sign in to continue</p>
+            <p>Sign in to continue</p>
         </div>
 
         {{-- Flash Messages --}}
@@ -467,9 +467,9 @@
             <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
         </form>
 
-        <div class="divider">
+        <!-- <div class="divider">
             <span>Demo Credentials</span>
-        </div>
+        </div> -->
 
         <!-- {{-- Demo credentials --}}
         <div class="credentials">

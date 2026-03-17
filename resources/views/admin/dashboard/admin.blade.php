@@ -55,13 +55,17 @@
         <tbody>
             @forelse($orders as $order)
             <tr>
-                <td>#{{ $order->id }}</td>
+                <td>#{{$order->id_pemesanan }}</td>
                 <td>{{ $order->nama_pesanan }}</td>
                 <td>{{ $order->customer->nama ?? '' }}</td>
                 <td>{{ $order->tanggal_pemesanan }}</td>
                 <td>{{ $order->deadline }}</td>
                 <td>{{ $order->status_pemesanan }}</td>
-                <td>aksi</td>
+                <td>
+                 <a href="{{ route('admin.orders.show', $order) }}">
+                    Lihat
+                     </a>
+                </td>
             </tr>
             @empty
             <tr>

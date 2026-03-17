@@ -28,20 +28,20 @@ class OrderManagementController extends Controller
         }
 
         // Sorting
-        $sort = $request->get('sort', 'created_at');
-        $direction = $request->get('direction', 'desc');
+        // $sort = $request->get('sort', 'created_at');
+        // $direction = $request->get('direction', 'desc');
         
-        $sortField = match($sort) {
-            'deadline' => 'deadline',
-            'date' => 'tanggal_pemesanan',
-            'status' => 'status_pemesanan',
-            'name' => 'nama_pesanan',
-            default => 'created_at'
-        };
+        // $sortField = match($sort) {
+        //     'deadline' => 'deadline',
+        //     'date' => 'tanggal_pemesanan',
+        //     'status' => 'status_pemesanan',
+        //     'name' => 'nama_pesanan',
+        //     default => 'created_at'
+        // };
 
-        $orders = $query->orderBy($sortField, $direction)->paginate(10)->withQueryString();
+        // $orders = $query->orderBy($sortField, $direction)->paginate(10)->withQueryString();
 
-        return view('admin.dashboard.admin', compact('orders'));
+        // return view('admin.dashboard.admin', compact('orders'));
     }
 
     public function create()
@@ -76,10 +76,14 @@ class OrderManagementController extends Controller
             ->with('success', 'Pesanan berhasil ditambahkan');
     }
 
-    public function show(Order $order)
-    {
-        return view('admin.orders.show', compact('order'));
-    }
+    public function show(Request $request, Order $order)
+{
+    $order->load('customer', 'desains');
+
+    $tab = $request->get('tab', 'informasi');
+
+    return view('admin.orders.show', compact('order', 'tab'));
+}
 
     public function update(Request $request, Order $order)
     {

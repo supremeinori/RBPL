@@ -72,9 +72,9 @@
             <label>Status Pesanan:</label><br>
             <select name="status_pemesanan" required>
                 <option value="pending" {{ old('status_pemesanan') == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="diproses" {{ old('status_pemesanan') == 'diproses' ? 'selected' : '' }}>Diproses</option>
+                <!-- <option value="diproses" {{ old('status_pemesanan') == 'diproses' ? 'selected' : '' }}>Diproses</option>
                 <option value="selesai" {{ old('status_pemesanan') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                <option value="dibatalkan" {{ old('status_pemesanan') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                <option value="dibatalkan" {{ old('status_pemesanan') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option> -->
             </select>
             @error('status_pemesanan')
                 <div style="color: red;">{{ $message }}</div>

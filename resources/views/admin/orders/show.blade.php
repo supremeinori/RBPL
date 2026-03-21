@@ -17,7 +17,7 @@
 @if($tab === 'informasi')
     <h2>Informasi Pesanan</h2>
     <p>Deskripsi: {{ $order->deskripsi_pemesanan }}</p>
-    <p>Deadline: {{ $order->deadline }}</p>
+    <p>Deadline: {{ $order->deadline }}</p> // nanti informasi ini bisa di edit
     <p>Status: {{ $order->status_pemesanan }}</p>
 
 @elseif($tab === 'desain')
@@ -38,7 +38,7 @@
         @foreach($order->desains as $desain)
         <tr>
             <td>{{ $desain->draft_ke }}</td>
-            <td>{{ $desain->status }}</td>
+            <td>{{ $desain->status_desain }}</td>
             <td>{{ $desain->created_at }}</td>
             <td>
                 <a href="#">Lihat</a>

@@ -7,17 +7,28 @@
 </head>
 <body>
     <h1>Tambah Draft</h1>
-
+    <a href="{{ route('admin.orders.show', $order->id_pemesanan) }}">Kembali</a>
+    <br><br>
 <form action="{{ route('admin.desain.store', $order->id_pemesanan) }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-    <label>File Desain</label><br>
-    <input type="file" name="file_desain"><br><br>
+    <label>Referensi</label><br>
+    <input type="file" name="file_referensi"><br><br>
 
-    <label>Deskripsi</label><br>
-    <textarea name="deskripsi_desain"></textarea><br><br>
+    <label>Catatan untuk desainer</label><br>
+    <textarea name="catatan_admin"></textarea><br><br>
 
-    <button type="submit">Upload</button>
+
+    <button type="submit">Simpan Draft</button>
+
+    @if ($errors->any())
+    <div>
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+@endif
+
 </form>
 </body>
 </html>

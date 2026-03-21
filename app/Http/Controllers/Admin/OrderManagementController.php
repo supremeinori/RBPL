@@ -72,7 +72,7 @@ class OrderManagementController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.orders.index')
+            ->route('admin.dashboard')
             ->with('success', 'Pesanan berhasil ditambahkan');
     }
 

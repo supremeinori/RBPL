@@ -17,6 +17,7 @@ class order extends Model
         'status_pemesanan',
         'deskripsi_pemesanan',
         'deadline',
+        'file_referensi',
     ];
 
     public function customer()

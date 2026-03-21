@@ -10,8 +10,9 @@ class desain extends Model
     protected $primaryKey = 'id_desain';
     protected $fillable = [
         // 'id_desain',
-        'nama_desain',
-        'deskripsi_desain',
+        'draft_ke',
+        'status_desain',
+        'cacatan_admin',
         'file_desain',
         'id_pemesanan',
     ];

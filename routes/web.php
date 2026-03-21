@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\OrderManagementController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\DesainController;
+use App\Http\Controllers\Desainer\DesainerDashboardController;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -32,7 +33,9 @@ Route::get('/', function () {
 Route::post('/', [AuthController::class, 'login'] );
 
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'] )->middleware(['auth', 'role:admin']); 
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'] )
+->middleware(['auth', 'role:admin'])
+->name('admin.dashboard'); 
 
 
 
@@ -42,10 +45,9 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'] )->mid
 // buat role admin, desainer, akuntan biar gak bisa diakses sama user yang bukan sesuai rolenya
 // entah apa lah ini
 
-
-Route::get('/desainer/dashboard', function () {
-    return view('desainer.dashboard.desainer');
-})->middleware(['auth', 'role:desainer']);
+Route::get('/desainer/dashboard', [DesainerDashboardController::class, 'index'])
+    ->middleware(['auth', 'role:desainer'])
+    ->name('desainer.dashboard');
 
 Route::get('/akuntan/dashboard', function () {
     return view('akuntan.dashboard.akuntan');
@@ -58,6 +60,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')
     Route::resource('users', UserManagementController::class); 
     Route::resource('customers', CustomerManagementController::class);
     Route::resource('orders', OrderManagementController::class);
+    Route::get('/admin/desain/create/{id}', [DesainController::class, 'create'])->name('desain.create');
+    Route::post('/admin/desain/store/{id}', [DesainController::class, 'store'])->name('desain.store');
 });
 
 
@@ -71,6 +75,4 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::get('/admin/desain/create/{id}', [DesainController::class, 'create'])->name('admin.desain.create');
-Route::post('/admin/desain/store/{id}', [DesainController::class, 'store'])->name('admin.desain.store');
 

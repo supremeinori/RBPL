@@ -19,4 +19,12 @@ class DesainerDashboardController extends Controller
 
         return view('desainer.dashboard.desainer', compact('desains'));
     }
+
+    public function show($id)
+    {
+        $desain = desain::with('order')->findOrFail($id);
+        return view('desainer.desain.show', compact('desain'));
+    }
+
+
 }

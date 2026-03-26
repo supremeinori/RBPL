@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderManagementController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\DesainController;
 use App\Http\Controllers\Desainer\DesainerDashboardController;
+use App\Http\Controllers\Desainer\DesainerOrderController;
 // Route::get('/', function () {
 //     return view('home');
 // });
@@ -48,6 +49,14 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'] )
 Route::get('/desainer/dashboard', [DesainerDashboardController::class, 'index'])
     ->middleware(['auth', 'role:desainer'])
     ->name('desainer.dashboard');
+Route::get('/desainer/orders/{id}', [DesainerOrderController::class, 'show'])
+    ->middleware(['auth', 'role:desainer'])
+    ->name('desainer.orders.show');
+Route::post('/desainer/orders/{id}/upload', [DesainerOrderController::class, 'upload'])
+    ->middleware(['auth', 'role:desainer'])
+    ->name('desainer.orders.upload');
+
+
 
 Route::get('/akuntan/dashboard', function () {
     return view('akuntan.dashboard.akuntan');

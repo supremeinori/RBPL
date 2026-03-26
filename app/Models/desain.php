@@ -14,6 +14,7 @@ class desain extends Model
         'status_desain',
         'cacatan_admin',
         'file_desain',
+        'file_referensi',
         'id_pemesanan',
     ];
 

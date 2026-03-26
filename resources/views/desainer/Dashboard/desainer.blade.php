@@ -20,6 +20,7 @@
             <th>Nama Pesanan</th>
             <th>Deadline</th>
             <th>Status</th>
+            <th>Aksi</th>
         </tr>
     </thead>
 
@@ -30,10 +31,16 @@
             <td>{{ $desain->order->nama_pesanan ?? '-' }}</td>
             <td>{{ $desain->order->deadline ?? '-' }}</td>
             <td>{{ $desain->status_desain }}</td>
+            <td>
+                @if($desain->status_desain !== 'setuju')
+                    <a href="{{ route('desainer.orders.show', $desain->id_pemesanan) }}">Kerjakan</a>
+                @else
+                    <span>Selesai</span>
+                @endif
         </tr>
         @empty
         <tr>
-            <td colspan="4">Belum ada tugas</td>
+            <td colspan="5">Belum ada tugas</td>
         </tr>
         @endforelse
     </tbody>

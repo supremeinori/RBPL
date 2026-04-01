@@ -3,28 +3,19 @@
 namespace App\Http\Controllers\Desainer;
 
 use App\Http\Controllers\Controller;
-use App\Models\desain;
+use App\Models\order;
 
 class DesainerDashboardController extends Controller
 {
     public function index()
     {
-        $desains = desain::with('order')
-            ->whereIn('id_desain', function ($query) {
-                $query->selectRaw('MAX(id_desain)')
-                      ->from('desain')
-                      ->groupBy('id_pemesanan');
-            })
-            ->get();
+        // Get all orders that have at least one desain draft
+        $orders = order::with(['desains' => function ($q) {
+            $q->orderBy('draft_ke', 'desc');
+        }])
+        ->whereHas('desains')
+        ->get();
 
-        return view('desainer.dashboard.desainer', compact('desains'));
+        return view('desainer.dashboard.desainer', compact('orders'));
     }
-
-    public function show($id)
-    {
-        $desain = desain::with('order')->findOrFail($id);
-        return view('desainer.desain.show', compact('desain'));
-    }
-
-
 }

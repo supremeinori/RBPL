@@ -18,6 +18,8 @@ class order extends Model
         'deskripsi_pemesanan',
         'deadline',
         'file_referensi',
+        'total_harga',
+        'bukti_kesepakatan',
     ];
 
     public function customer()
@@ -27,7 +29,12 @@ class order extends Model
 
     public function desains()
     {
-    return $this->hasMany(Desain::class, 'id_pemesanan', 'id_pemesanan');
+        return $this->hasMany(Desain::class, 'id_pemesanan', 'id_pemesanan');
+    }
+
+    public function pembayarans()
+    {
+        return $this->hasMany(pembayaran::class, 'id_pemesanan', 'id_pemesanan');
     }
 }
 

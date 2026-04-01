@@ -12,15 +12,15 @@ class desain extends Model
         // 'id_desain',
         'draft_ke',
         'status_desain',
-        'cacatan_admin',
+        'catatan_admin',
         'file_desain',
         'file_referensi',
         'id_pemesanan',
     ];
 
-    
-public function order()
-{
-    return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan');
-}
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan');
+    }
 }

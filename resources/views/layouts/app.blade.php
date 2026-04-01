@@ -15,18 +15,22 @@
         }
 
         :root {
-            --black:       #0a0a0a;
-            --dark:        #111111;
-            --mid:         #1c1c1c;
-            --border:      #2a2a2a;
-            --muted:       #555555;
-            --subtle:      #888888;
-            --light:       #d4d4d4;
-            --white:       #ffffff;
-            --accent:      #ffffff;
-            --radius:      14px;
+            --black:       #f8f9fc; /* Main background */
+            --dark:        #ffffff; /* Cards / Sidebar */
+            --mid:         #f1f5f9; /* Hover / Table headers */
+            --border:      #e2e8f0;
+            --muted:       #64748b;
+            --subtle:      #475569;
+            --light:       #334155; /* Normal text */
+            --white:       #0f172a; /* Headlines */
+            --accent:      #2563eb; /* Blue accent */
+            --radius:      12px;
             --transition:  0.25s ease;
-            --sidebar-w:   240px;
+            --sidebar-w:   250px;
+            
+            --success:     #10b981;
+            --danger:      #ef4444;
+            --warning:     #f59e0b;
         }
 
         html, body {
@@ -42,9 +46,9 @@
             position: fixed;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 48px 48px;
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
             pointer-events: none;
             z-index: 0;
         }
@@ -88,228 +92,99 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(255,255,255,0.12);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Light box shadow */
         }
+        .sidebar-brand-icon svg { color: var(--dark); } /* Because white is dark blue now, and dark is white */
 
-        .sidebar-brand-icon svg {
-            width: 18px;
-            height: 18px;
-            color: var(--black);
-        }
-
-        .sidebar-brand-text h2 {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: var(--white);
-            letter-spacing: -0.2px;
-            line-height: 1.2;
-        }
-
-        .sidebar-brand-text span {
-            font-size: 11px;
-            color: var(--muted);
-            font-weight: 400;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .nav-label {
-            font-size: 10.5px;
-            font-weight: 600;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 8px 8px 4px;
-            margin-top: 8px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 10px;
-            border-radius: 10px;
-            text-decoration: none;
-            color: var(--subtle);
-            font-size: 13.5px;
-            font-weight: 500;
-            transition: background var(--transition), color var(--transition);
-        }
-
-        .nav-item svg {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-        }
-
-        .nav-item:hover {
-            background: var(--mid);
-            color: var(--light);
-        }
-
-        .nav-item.active {
-            background: var(--mid);
-            color: var(--white);
-            border: 1px solid var(--border);
-        }
-
-        .sidebar-footer {
-            padding: 12px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: center;
-        }
-
-        .btn-logout {
-            width: auto;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            color: var(--subtle);
-            font-size: 12px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: background var(--transition), color var(--transition), border-color var(--transition);
-        }
-
-        .btn-logout:hover {
-            background: rgba(239,68,68,0.08);
-            border-color: rgba(239,68,68,0.25);
-            color: #fca5a5;
-        }
-
-        /* ── Main ── */
-        .main {
-            margin-left: var(--sidebar-w);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ── Topbar ── */
-        .topbar {
-            background: var(--dark);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-
-        .topbar-title-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .topbar-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--white);
-            letter-spacing: -0.2px;
-        }
-
-        .topbar-sub {
-            font-size: 12.5px;
-            color: var(--muted);
-            margin-top: 2px;
-        }
-
-        .topbar-badge {
-            font-size: 12px;
-            color: var(--subtle);
-            background: var(--mid);
-            border: 1px solid var(--border);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        /* ── Content ── */
-        .content {
-            padding: 32px;
-            flex: 1;
-        }
-
-        /* ── Global Shared UI Components ── */
         .section-card {
             background: var(--dark);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
             overflow: hidden;
             margin-bottom: 24px;
             animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
         }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0);    }
-        }
-
         .section-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 20px 24px;
+            align-items: center;
+            padding: 24px;
             border-bottom: 1px solid var(--border);
         }
-
         .section-title {
-            font-size: 14.5px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--white);
         }
 
-        /* Buttons */
         .btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: var(--white);
-            color: var(--black);
+            background: var(--white); /* White is primary text color, so button is dark */
+            color: var(--dark); /* Text inside button is white */
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 13.5px;
             font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             text-decoration: none;
+            box-shadow: 0 4px 10px rgba(15,23,42,0.1);
             transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
         }
-        .btn-primary:hover { background: #e8e8e8; transform: translateY(-1px); }
+        .btn-primary:hover { 
+            background: var(--light); 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 15px rgba(15,23,42,0.15);
+        }
 
-        /* Tables */
-        .table-wrap { overflow-x: auto; }
+        /* ── Sidebar Nav ── */
+        .sidebar-nav { flex: 1; overflow-y: auto; padding-top: 8px; }
+        .sidebar-footer { padding: 12px 0; border-top: 1px solid var(--border); }
+        .nav-label { padding: 0 20px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 8px; margin-top: 24px; display: block; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: var(--subtle); text-decoration: none; font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; transition: var(--transition); border-left: 3px solid transparent; }
+        .nav-item:hover { color: var(--accent); background: rgba(37,99,235,0.05); }
+        .nav-item.active { color: var(--accent); background: rgba(37,99,235,0.05); border-left-color: var(--accent); font-weight: 600; }
+        .nav-item svg { width: 18px; height: 18px; stroke-width: 2; opacity: 0.8; }
+        .nav-item.active svg { opacity: 1; }
+
+        .btn-logout { background: none; border: none; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--danger); cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 12px 20px; width: 100%; transition: var(--transition); text-align: left; }
+        .btn-logout:hover { background: rgba(239, 68, 68, 0.05); }
+        .btn-logout svg { width: 18px; height: 18px; }
+
+        /* ── Main Layout Elements ── */
+        .main { flex: 1; margin-left: var(--sidebar-w); display: flex; flex-direction: column; }
+        .content { padding: 32px 40px; flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; }
+
+        /* ── Topbar ── */
+        .topbar { padding: 24px 40px; border-bottom: 1px solid var(--border); background: var(--dark); display: flex; justify-content: space-between; align-items: flex-end; position: sticky; top: 0; z-index: 5; }
+        .topbar-title { font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+        .topbar-sub { font-size: 13.5px; color: var(--muted); }
+        .topbar-badge { background: var(--mid); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--light); border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+
         table { width: 100%; border-collapse: collapse; }
         thead th {
-            padding: 12px 16px;
+            padding: 14px 18px;
             text-align: left;
             font-size: 11.5px;
             font-weight: 600;
             color: var(--muted);
             text-transform: uppercase;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.05em;
             border-bottom: 1px solid var(--border);
             background: var(--mid);
         }
-        tbody td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+        tbody td { padding: 16px 18px; border-bottom: 1px solid var(--border); font-size: 14px; }
         tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background: rgba(255,255,255,0.03); }
+        tbody tr:hover { background: rgba(0,0,0,0.02); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         @yield('styles')
     </style>
@@ -350,6 +225,14 @@
                 <a href="{{ route('admin.orders.create') }}" class="nav-item {{ Request::is('admin/orders/create') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     Tambah Pesanan
+                </a>
+            @endif
+
+            @if(Auth::user()->role === 'akuntan')
+                <span class="nav-label">Finance</span>
+                <a href="{{ route('akuntan.dashboard') }}" class="nav-item {{ Request::is('akuntan/dashboard*') || Request::is('akuntan/pembayaran*') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Validasi Pembayaran
                 </a>
             @endif
         </nav>

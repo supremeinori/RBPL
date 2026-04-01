@@ -1,20 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Pesanan</title>
-</head>
-<body>
-<div>
-    <h1>Tambah Pesanan</h1>
-    <a href="/admin/dashboard">Kembali</a>
-    <br><br>
+@extends('layouts.app')
+@section('title', 'Tambah Pesanan')
+@section('subtitle', 'Daftarkan projek / pesanan pelanggan baru')
+
+@section('styles')
+<style>
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 13.5px; }
+    .form-input { 
+        width: 100%; 
+        padding: 10px 14px; 
+        border: 1px solid var(--border); 
+        border-radius: 8px; 
+        background: var(--black); 
+        color: var(--light); 
+        font-family: inherit;
+    }
+    .form-input:focus { outline: none; border-color: var(--accent); }
+    .form-action { display: flex; gap: 12px; margin-top: 32px; }
+</style>
+@endsection
+
+@section('content')
+<div class="section-card" style="max-width: 600px;">
+    <div class="section-header">
+        <h2 class="section-title">Formulir Pesanan Baru</h2>
+    </div>
 
     @if ($errors->any())
-        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
-            <strong>Terjadi Kesalahan:</strong>
-            <ul>
+        <div style="background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 12px 24px; border-bottom: 1px solid var(--border);">
+            <ul style="margin-left: 16px;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -22,77 +36,57 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.orders.store') }}" method="POST">
-        @csrf
-        
-        <div>
-            <label>Pelanggan:</label><br>
-            <select name="id_pelanggan" required>
-                <option value="">-- Pilih Pelanggan --</option>
-                @foreach($customers as $customer)
-                    <option value="{{ $customer->id_pelanggan }}" {{ old('id_pelanggan') == $customer->id_pelanggan ? 'selected' : '' }}>
-                        {{ $customer->nama }}
-                    </option>
-                @endforeach
-            </select>
-            @error('id_pelanggan')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-        <br>
+    <div style="padding: 24px;">
+        <form action="{{ route('admin.orders.store') }}" method="POST">
+            @csrf
+            
+            <div class="form-group">
+                <label class="form-label">Pelanggan Pengorder</label>
+                <select name="id_pelanggan" required class="form-input">
+                    <option value="" disabled selected>-- Pilih Data Pelanggan --</option>
+                    @foreach($customers as $customer)
+                        <option value="{{ $customer->id_pelanggan }}" {{ old('id_pelanggan') == $customer->id_pelanggan ? 'selected' : '' }}>
+                            {{ $customer->nama }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div>
-            <label>Nama Pesanan / Layanan:</label><br>
-            <input type="text" name="nama_pesanan" value="{{ old('nama_pesanan') }}" required>
-            @error('nama_pesanan')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-        <br>
+            <div class="form-group">
+                <label class="form-label">Nama Pesanan / Layanan</label>
+                <input type="text" name="nama_pesanan" value="{{ old('nama_pesanan') }}" required class="form-input" placeholder="Contoh: Pembuatan Baliho Festival">
+            </div>
 
-        <div>
-            <label>Tanggal Pemesanan:</label><br>
-            <input type="date" name="tanggal_pemesanan" value="{{ old('tanggal_pemesanan', date('Y-m-d')) }}" required>
-            @error('tanggal_pemesanan')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-        <br>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                    <label class="form-label">Tanggal Pemesanan</label>
+                    <input type="date" name="tanggal_pemesanan" value="{{ old('tanggal_pemesanan', date('Y-m-d')) }}" required class="form-input">
+                </div>
 
-        <div>
-            <label>Deadline / Estimasi Selesai:</label><br>
-            <input type="date" name="deadline" value="{{ old('deadline') }}" required>
-            @error('deadline')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-        <br>
+                <div class="form-group">
+                    <label class="form-label">Deadline / Target Selesai</label>
+                    <input type="date" name="deadline" value="{{ old('deadline') }}" required class="form-input">
+                </div>
+            </div>
 
-        <div>
-            <label>Status Pesanan:</label><br>
-            <select name="status_pemesanan" required>
-                <option value="pending" {{ old('status_pemesanan') == 'pending' ? 'selected' : '' }}>Pending</option>
-                <!-- <option value="diproses" {{ old('status_pemesanan') == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                <option value="selesai" {{ old('status_pemesanan') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                <option value="dibatalkan" {{ old('status_pemesanan') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option> -->
-            </select>
-            @error('status_pemesanan')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-        <br>
+            <div class="form-group">
+                <label class="form-label">Status Awalan Pesanan</label>
+                <select name="status_pemesanan" required class="form-input">
+                    <option value="pending" {{ old('status_pemesanan') == 'pending' ? 'selected' : '' }}>Pending</option>
+                </select>
+                <p style="font-size:12px; color:var(--muted); margin-top:6px;">Order baru akan berada di status pending hingga DP dibayar.</p>
+            </div>
 
-        <div>
-            <label>Deskripsi / Detail Pesanan:</label><br>
-            <textarea name="deskripsi_pemesanan" rows="5" cols="40">{{ old('deskripsi_pemesanan') }}</textarea>
-            @error('deskripsi_pemesanan')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-        <br>
+            <div class="form-group">
+                <label class="form-label">Deskripsi / Detail Pesanan</label>
+                <textarea name="deskripsi_pemesanan" rows="5" class="form-input" placeholder="Tuliskan catatan teknis secara lengkap disini...">{{ old('deskripsi_pemesanan') }}</textarea>
+            </div>
 
-        <button type="submit">Simpan Pesanan</button>
-    </form>
+            <div class="form-action">
+                <button type="submit" class="btn-primary">Publikasi Order</button>
+                <a href="/admin/dashboard" class="btn-primary" style="background:var(--mid); color:var(--light); box-shadow:none;">Batal</a>
+            </div>
+        </form>
+    </div>
 </div>
-</body>
-</html>
+@endsection

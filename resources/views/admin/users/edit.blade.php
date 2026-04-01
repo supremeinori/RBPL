@@ -1,20 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User</title>
-</head>
-<body>
-<div>
-    <h1>Edit User</h1>
-    <a href="{{ route('admin.users.index') }}">Kembali</a>
-    <br><br>
+@extends('layouts.app')
+@section('title', 'Edit User')
+@section('subtitle', 'Pembaruan profil dan hak akses')
+
+@section('styles')
+<style>
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 13.5px; }
+    .form-input { 
+        width: 100%; 
+        padding: 10px 14px; 
+        border: 1px solid var(--border); 
+        border-radius: 8px; 
+        background: var(--black); 
+        color: var(--light); 
+        font-family: inherit;
+    }
+    .form-input:focus { outline: none; border-color: var(--accent); }
+    .form-action { display: flex; gap: 12px; margin-top: 32px; }
+</style>
+@endsection
+
+@section('content')
+<div class="section-card" style="max-width: 600px;">
+    <div class="section-header">
+        <h2 class="section-title">Formulir Update Staf #{{ $user->id }}</h2>
+    </div>
 
     @if ($errors->any())
-        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
-            <strong>Terjadi Kesalahan:</strong>
-            <ul>
+        <div style="background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 12px 24px; border-bottom: 1px solid var(--border);">
+            <ul style="margin-left: 16px;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -22,40 +36,41 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
-        @csrf
-        @method('PUT')
+    <div style="padding: 24px;">
+        <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="form-group">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" required class="form-input">
+            </div>
 
-        <div>
-            <label>Nama Lengkap:</label><br>
-            <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
-        </div>
-        <br>
+            <div class="form-group">
+                <label class="form-label">Alamat Email</label>
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" required class="form-input">
+            </div>
 
-        <div>
-            <label>Alamat Email (tidak dapat diubah):</label><br>
-            <input type="email" name="email" value="{{ old('email', $user->email) }}" readonly>
-        </div>
-        <br>
+            <div class="form-group">
+                <label class="form-label">Password Baru (Opsional)</label>
+                <input type="password" name="password" class="form-input" placeholder="Isi untuk mengganti password baru...">
+                <p style="font-size:12px; color:var(--muted); margin-top:6px;">Kosongkan jika tidak ingin ganti sandi.</p>
+            </div>
 
-        <div>
-            <label>Password Baru (kosongkan jika tidak diubah):</label><br>
-            <input type="password" name="password">
-        </div>
-        <br>
+            <div class="form-group">
+                <label class="form-label">Hak Akses (Role)</label>
+                <select name="role" required class="form-input">
+                    <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="desainer" {{ old('role', $user->role) == 'desainer' ? 'selected' : '' }}>Desainer</option>
+                    <option value="akuntan" {{ old('role', $user->role) == 'akuntan' ? 'selected' : '' }}>Akuntan</option>
+                </select>
+            </div>
 
-        <div>
-            <label>Role Akses:</label><br>
-            <select name="role" required>
-                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="desainer" {{ $user->role == 'desainer' ? 'selected' : '' }}>Desainer</option>
-                <option value="akuntan" {{ $user->role == 'akuntan' ? 'selected' : '' }}>Akuntan</option>
-            </select>
-        </div>
-        <br>
-
-        <button type="submit">Simpan Perubahan</button>
-    </form>
+            <div class="form-action">
+                <button type="submit" class="btn-primary">Update Profil</button>
+                <a href="{{ route('admin.users.index') }}" class="btn-primary" style="background:var(--mid); color:var(--light); box-shadow:none;">Batal</a>
+            </div>
+        </form>
+    </div>
 </div>
-</body>
-</html>
+@endsection

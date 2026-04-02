@@ -54,4 +54,45 @@
         </table>
     </div>
 </div>
+
+<div class="section-card" style="margin-top: 24px;">
+    <div class="section-header">
+        <h2 class="section-title">Histori Validasi</h2>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Pesanan</th>
+                    <th>Tgl Bayar</th>
+                    <th>Nama Nasabah</th>
+                    <th>Jenis</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($histroypayment as $bayar)
+                    <tr>
+                        <td><strong>#{{ $bayar->id_pemesanan }}</strong></td>
+                        <td>{{ date('d M Y', strtotime($bayar->tanggal_bayar)) }}</td>
+                        <td>{{ optional(optional($bayar->order)->customer)->nama_pelanggan ?? 'Tanpa Pelanggan' }}</td>
+                        <td><span style="background:var(--mid); padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid var(--border);">{{ strtoupper($bayar->jenis_pembayaran) }}</span></td>
+                        <td style="font-weight:600;">Rp {{ number_format($bayar->nominal, 0, ',', '.') }}</td>
+                        <td style="color:var(--success); font-weight:600;">{{ strtoupper($bayar->status_verifikasi) }}</td>
+                        <td>
+                            <a href="{{ route('akuntan.pembayaran.show', $bayar->id_pembayaran) }}" class="btn-primary" style="padding: 6px 12px; font-size:12px;">Lihat Histori</a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding: 40px; color:var(--muted);">Tidak ada histori pembayaran.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection

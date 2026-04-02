@@ -61,7 +61,7 @@
                             @if($latest && $latest->status_desain !== 'setuju')
                                 <a href="{{ route('desainer.orders.show', $order->id_pemesanan) }}" class="btn-primary" style="padding: 6px 14px; font-size:12px; background:var(--accent); color:var(--white);">Mulai Bekerja ↗</a>
                             @elseif($latest && $latest->status_desain === 'setuju')
-                                <span style="color:var(--muted); font-size:13px; font-weight:500;">Selesai Dikerjakan</span>
+                                <a href="{{ route('desainer.orders.show', $order->id_pemesanan) }}" class="btn-primary" style="padding: 6px 14px; font-size:12px; background:var(--accent); color:var(--white);">Lihat Hasil ↗</a>
                             @else
                                 <span style="color:var(--muted); font-size:13px; font-style:italic;">Belum ada brief</span>
                             @endif

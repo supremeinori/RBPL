@@ -15,6 +15,11 @@ class DashboardController extends Controller
             ->orderBy('tanggal_bayar', 'asc')
             ->get();
 
-        return view('akuntan.dashboard.akuntan', compact('pendingPayments'));
+        $histroypayment = pembayaran::with('order.customer')
+            ->where('status_verifikasi', 'disetujui')
+            ->orderBy('tanggal_bayar', 'asc')
+            ->get();
+
+        return view('akuntan.dashboard.akuntan', compact('pendingPayments', 'histroypayment'));
     }
 }

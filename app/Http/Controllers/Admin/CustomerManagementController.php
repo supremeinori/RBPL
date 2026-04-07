@@ -90,4 +90,27 @@ class CustomerManagementController extends Controller
 
         return response()->json($customers);
     }
+
+    public function storeApi(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+        ]);
+
+        $customer = Customer::create([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'customer' => [
+                'id_pelanggan' => $customer->id_pelanggan,
+                'nama' => $customer->nama
+            ]
+        ]);
+    }
 }

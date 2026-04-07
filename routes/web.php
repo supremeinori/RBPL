@@ -27,6 +27,7 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('customers/search', [CustomerManagementController::class, 'searchApi'])->name('customers.search');
+    Route::post('customers/api-store', [CustomerManagementController::class, 'storeApi'])->name('customers.storeApi');
     Route::resource('users',     UserManagementController::class);
     Route::resource('customers', CustomerManagementController::class);
     Route::resource('orders',    OrderManagementController::class);

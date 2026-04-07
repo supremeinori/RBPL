@@ -24,7 +24,7 @@ class DesainerOrderController extends Controller
     // Designer: view a single draft (read-only)
     public function showDraft($orderId, $desainId)
     {
-        $order  = order::findOrFail($orderId);
+        $order = order::findOrFail($orderId);
 
         if ($order->id_desainer !== auth()->id()) {
             abort(403, 'Akses ditolak.');
@@ -57,11 +57,11 @@ class DesainerOrderController extends Controller
         if (!$latest) {
             return back()->with('error', 'Draft belum dibuat oleh admin.');
         }
- 
+
         if ($latest->status_desain === 'waiting_review') {
             return back()->with('error', 'Desain sedang menunggu review, tidak bisa upload.');
         }
- 
+
         // Already approved — cannot upload
         if ($latest->status_desain === 'setuju') {
             return back()->with('error', 'Desain sudah disetujui, tidak bisa upload.');
@@ -73,7 +73,7 @@ class DesainerOrderController extends Controller
         $updateData = [
             'file_desain' => $filePath,
             'status_desain' => 'waiting_review', // Set status to waiting_review after upload
-        ];  
+        ];
 
         $latest->update($updateData);
 

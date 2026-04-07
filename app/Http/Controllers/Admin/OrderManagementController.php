@@ -47,7 +47,7 @@ class OrderManagementController extends Controller
 
     public function create()
     {
-        $customers = Customer::limit(5)->get();
+        $customers = Customer::latest('created_at')->limit(5)->get();
 
         return view('admin.orders.create', compact('customers'));
     }

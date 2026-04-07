@@ -7,9 +7,16 @@
     .tab-nav {
         display: flex;
         gap: 12px;
-        margin-bottom: 24px;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 16px;
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--dark);
+        padding: 12px 24px;
+        border-radius: 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        border: 1px solid var(--border);
+        z-index: 1000;
     }
     .tab-item {
         padding: 8px 16px;
@@ -31,18 +38,18 @@
 @endsection
 
 @section('content')
-<div class="section-card">
+<div class="tab-nav" style="display: flex; gap: 12px; position: fixed; bottom: 40px; left: calc(50% + 125px); transform: translateX(-50%); background: var(--dark); padding: 12px 24px; border-radius: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 1px solid var(--border); z-index: 9999;">
+    <a href="{{ route('admin.orders.show', [$order, 'tab' => 'informasi']) }}" class="tab-item {{ $tab === 'informasi' ? 'active' : '' }}" style="border-radius: 30px;">Informasi & Timeline</a>
+    <a href="{{ route('admin.orders.show', [$order, 'tab' => 'desain']) }}" class="tab-item {{ $tab === 'desain' ? 'active' : '' }}" style="border-radius: 30px;">Manajemen Desain (Draft)</a>
+    <a href="{{ route('admin.orders.show', [$order, 'tab' => 'pembayaran']) }}" class="tab-item {{ $tab === 'pembayaran' ? 'active' : '' }}" style="border-radius: 30px;">Pembayaran & Keuangan</a>
+</div>
+
+<div class="section-card" style="margin-bottom: 100px;">
     @if(session('success'))
         <div style="padding: 16px 24px; background: rgba(16, 185, 129, 0.1); color: var(--success); border-bottom: 1px solid var(--border); margin-bottom: 24px; border-radius: 8px;">
             <strong>{{ session('success') }}</strong>
         </div>
     @endif
-
-    <div class="tab-nav">
-        <a href="{{ route('admin.orders.show', [$order, 'tab' => 'informasi']) }}" class="tab-item {{ $tab === 'informasi' ? 'active' : '' }}">Informasi & Timeline</a>
-        <a href="{{ route('admin.orders.show', [$order, 'tab' => 'desain']) }}" class="tab-item {{ $tab === 'desain' ? 'active' : '' }}">Manajemen Desain (Draft)</a>
-        <a href="{{ route('admin.orders.show', [$order, 'tab' => 'pembayaran']) }}" class="tab-item {{ $tab === 'pembayaran' ? 'active' : '' }}">Pembayaran & Keuangan</a>
-    </div>
 
     @if($tab === 'informasi')
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">

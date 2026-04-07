@@ -30,6 +30,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('users',     UserManagementController::class);
     Route::resource('customers', CustomerManagementController::class);
     Route::resource('orders',    OrderManagementController::class);
+    Route::post('orders/{id}/deadline', [OrderManagementController::class, 'updateDeadline'])->name('orders.updateDeadline');
+    Route::post('orders/{id}/assign-designer', [OrderManagementController::class, 'assignDesigner'])->name('orders.assignDesigner');
 
     // Desain (draft management — admin only creates/approves)
     Route::get('desain/create/{id}',    [DesainController::class, 'create'])->name('desain.create');

@@ -14,6 +14,10 @@ class DesainerOrderController extends Controller
     {
         $order = order::with('desains')->findOrFail($id);
 
+        if ($order->id_desainer !== auth()->id()) {
+            abort(403, 'Akses ditolak. Anda bukan PIC desainer untuk pesanan ini.');
+        }
+
         return view('desainer.orders.show', compact('order'));
     }
 
@@ -21,6 +25,11 @@ class DesainerOrderController extends Controller
     public function showDraft($orderId, $desainId)
     {
         $order  = order::findOrFail($orderId);
+
+        if ($order->id_desainer !== auth()->id()) {
+            abort(403, 'Akses ditolak.');
+        }
+
         $desain = desain::where('id_pemesanan', $orderId)
             ->where('id_desain', $desainId)
             ->firstOrFail();
@@ -35,6 +44,11 @@ class DesainerOrderController extends Controller
             'file_desain' => 'required|image|max:5120',
         ]);
 
+        $order = order::findOrFail($id);
+        if ($order->id_desainer !== auth()->id()) {
+            abort(403, 'Anda bukan PIC desainer untuk pesanan ini.');
+        }
+
         $latest = desain::where('id_pemesanan', $id)
             ->orderBy('draft_ke', 'desc')
             ->first();
@@ -43,7 +57,11 @@ class DesainerOrderController extends Controller
         if (!$latest) {
             return back()->with('error', 'Draft belum dibuat oleh admin.');
         }
-
+ 
+        if ($latest->status_desain === 'waiting_review') {
+            return back()->with('error', 'Desain sedang menunggu review, tidak bisa upload.');
+        }
+ 
         // Already approved — cannot upload
         if ($latest->status_desain === 'setuju') {
             return back()->with('error', 'Desain sudah disetujui, tidak bisa upload.');
@@ -52,7 +70,12 @@ class DesainerOrderController extends Controller
         // Always update latest draft — never create new record
         $filePath = $request->file('file_desain')->store('desain', 'public');
 
-        $latest->update(['file_desain' => $filePath]);
+        $updateData = [
+            'file_desain' => $filePath,
+            'status_desain' => 'waiting_review', // Set status to waiting_review after upload
+        ];  
+
+        $latest->update($updateData);
 
         return back()->with('success', 'File desain berhasil diupload.');
     }

@@ -45,21 +45,57 @@
     </div>
 
     @if($tab === 'informasi')
-        <h3 style="margin-bottom: 16px; font-size: 18px;">Informasi Teknis Pesanan</h3>
-        <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
-            <table class="info-table" style="width: 100%; border-collapse: collapse;">
-                <tbody>
-                    <tr>
-                        <th>Deskripsi / Instruksi Tambahan</th>
-                        <td>{{ $order->deskripsi_pemesanan ?: '-' }}</td>
-                    </tr>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 18px;">Informasi Teknis Pesanan</h3>
+            <button class="btn-primary" onclick="toggleEditInfo()" id="btn-edit-info" style="font-size: 12px; padding: 6px 12px; background: var(--mid); box-shadow: none;">Edit Deskripsi</button>
+        </div>
+        
+        <form action="{{ route('admin.orders.update', $order->id_pemesanan) }}" method="POST" id="form-edit-info">
+            @csrf
+            @method('PUT')
+            
+            <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 16px;">
+                <table class="info-table" style="width: 100%; border-collapse: collapse;">
+                    <tbody>
+                        <tr>
+                            <th>Pelanggan Pemesan</th>
+                            <td>
+                                {{ $order->customer->nama ?? '-' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Deskripsi / Instruksi Tambahan</th>
+                            <td>
+                                <div id="display-desc">{{ $order->deskripsi_pemesanan ?: '-' }}</div>
+                                <div id="edit-desc" style="display: none;">
+                                    <textarea name="deskripsi_pemesanan" rows="4" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--black); color: var(--light);">{{ $order->deskripsi_pemesanan }}</textarea>
+                                </div>
+                            </td>
+                        </tr>
                     <tr>
                         <th>Tgl. Pesanan Dibuat</th>
                         <td>{{ date('d F Y', strtotime($order->tanggal_pemesanan)) }}</td>
                     </tr>
                     <tr>
                         <th>Tgl. Deadline (Target Selesai)</th>
-                        <td style="color:var(--danger); font-weight:600;">{{ date('d F Y', strtotime($order->deadline)) }}</td>
+                        <td>
+                            @if($order->deadline)
+                                <span style="color:var(--danger); font-weight:600;">{{ date('d F Y', strtotime($order->deadline)) }}</span>
+                            @else
+                                <span style="color:var(--muted); font-size: 13px;">Belum Ditentukan (Menunggu DP/Kesepakatan)</span>
+                                @if($order->status_pemesanan !== 'pending')
+                                    <!-- Form Muncul jika status pesanan diproses tapi deadline belum diset -->
+                                    <div style="margin-top: 12px; background: var(--mid); padding: 12px; border-radius: 8px; border: 1px dashed var(--accent);">
+                                        <p style="font-size: 11px; margin-bottom: 8px; font-weight: 600; color: var(--light);">⚠️ Action Required: Tentukan Deadline Produksi</p>
+                                        <form action="{{ route('admin.orders.updateDeadline', $order->id_pemesanan) }}" method="POST" style="display:flex; gap: 8px;">
+                                            @csrf
+                                            <input type="date" name="deadline" required style="padding: 6px; border-radius: 4px; border: 1px solid var(--border); background: var(--black); color: var(--light); font-size: 12px; flex: 1;">
+                                            <button type="submit" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Simpan</button>
+                                        </form>
+                                    </div>
+                                @endif
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>Status Saat Ini</th>
@@ -73,6 +109,29 @@
                 </tbody>
             </table>
         </div>
+        <div style="display: none; justify-content: flex-end;" id="submit-desc-btn">
+            <button type="button" onclick="cancelEditInfo()" class="btn-primary" style="background:var(--mid); margin-right:8px; box-shadow:none;">Batal</button>
+            <button type="submit" class="btn-primary">Update Deskripsi</button>
+        </div>
+        </form>
+
+        <script>
+            function toggleEditInfo() {
+                document.getElementById('display-desc').style.display = 'none';
+                document.getElementById('edit-desc').style.display = 'block';
+                document.getElementById('submit-desc-btn').style.display = 'flex';
+                document.getElementById('btn-edit-info').style.display = 'none';
+            }
+
+            function cancelEditInfo() {
+                document.getElementById('display-desc').style.display = 'block';
+                document.getElementById('edit-desc').style.display = 'none';
+                document.getElementById('submit-desc-btn').style.display = 'none';
+                document.getElementById('btn-edit-info').style.display = 'inline-block';
+                // Reset form optionally
+                document.getElementById('form-edit-info').reset();
+            }
+        </script>
 
     @elseif($tab === 'desain')
         @php
@@ -80,10 +139,54 @@
             $isApproved   = $latestDesain && $latestDesain->status_desain === 'setuju';
         @endphp
 
+        <!-- Blok Penugasan Desainer (Assignee PIC) -->
+        <div style="background: var(--dark); padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">Penanggung Jawab Desain (PIC)</h4>
+                    @if($order->designer)
+                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                            <div style="width: 32px; height: 32px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">
+                                {{ substr($order->designer->name, 0, 1) }}
+                            </div>
+                            <div>
+                                <span style="font-weight: 600; font-size: 14px; color: var(--white);">{{ $order->designer->name }}</span>
+                                <p style="margin: 0; font-size: 12px; color: var(--muted);">{{ $order->designer->email }}</p>
+                            </div>
+                        </div>
+                    @else
+                        <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--danger);">⚠️ Belum ada desainer yang ditunjuk untuk pesanan ini.</p>
+                    @endif
+                </div>
+                
+                <div style="width: 250px;">
+                    <form action="{{ route('admin.orders.assignDesigner', $order->id_pemesanan) }}" method="POST">
+                        @csrf
+                        <label style="display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px;">{{ $order->designer ? 'Ganti Desainer' : 'Tunjuk Desainer PIC' }}</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select name="id_desainer" required style="flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--black); color: var(--light); font-size: 12px;">
+                                <option value="" disabled selected>-- Pilih Desainer --</option>
+                                @foreach($designers as $designer)
+                                    <option value="{{ $designer->id }}" {{ $order->id_desainer == $designer->id ? 'selected' : '' }}>
+                                        {{ $designer->name }}
+                                    </div>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn-primary" style="padding: 6px 12px; font-size: 11px;">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
             <h3 style="font-size: 18px;">Histori Perancangan Draft</h3>
             @if(!$isApproved)
-                <a href="{{ route('admin.desain.create', $order->id_pemesanan) }}" class="btn-primary" style="padding: 8px 16px; font-size: 13px;">+ Ajukan Antrean Desain Baru</a>
+                @if($order->id_desainer)
+                    <a href="{{ route('admin.desain.create', $order->id_pemesanan) }}" class="btn-primary" style="padding: 8px 16px; font-size: 13px;">+ Ajukan Antrean Desain Baru</a>
+                @else
+                    <button class="btn-primary" disabled style="padding: 8px 16px; font-size: 13px; opacity: 0.5; cursor: not-allowed; background: var(--mid);">Tunjuk Desainer Dulu</button>
+                @endif
             @else
                 <span style="background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600;">Desain Telah Disetujui (Final)</span>
             @endif

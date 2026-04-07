@@ -12,7 +12,7 @@ class PaymentValidationController extends Controller
     public function show($id)
     {
         $pembayaran = pembayaran::with('order.customer')->findOrFail($id);
-        
+
         return view('akuntan.pembayaran.show', compact('pembayaran'));
     }
 
@@ -30,8 +30,13 @@ class PaymentValidationController extends Controller
         if ($pembayaran->jenis_pembayaran === 'dp' && $order->status_pemesanan === 'pending') {
             $order->status_pemesanan = 'diproses';
             $order->save();
-        } elseif ($pembayaran->jenis_pembayaran === 'pelunasan') {
-            // Bisa tambahkan logika pelunasan/selesai jika sesuai requirement
+        }
+
+        // Pengecekan Pelunasan Keseluruhan
+        $totalTerbayar = $order->pembayarans()->where('status_verifikasi', 'disetujui')->sum('nominal');
+        $desainApproved = $order->desains()->where('status_desain', 'setuju')->exists();
+
+        if ($totalTerbayar >= $order->total_harga && $desainApproved) {
             $order->status_pemesanan = 'selesai';
             $order->save();
         }

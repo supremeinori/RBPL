@@ -9,10 +9,11 @@ class DesainerDashboardController extends Controller
 {
     public function index()
     {
-        // Get all orders that have at least one desain draft
+        // Get only orders that are assigned to this designer
         $orders = order::with(['desains' => function ($q) {
             $q->orderBy('draft_ke', 'desc');
         }])
+        ->where('id_desainer', auth()->id())
         ->whereHas('desains')
         ->get();
 

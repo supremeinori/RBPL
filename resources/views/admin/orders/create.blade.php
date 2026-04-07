@@ -57,15 +57,10 @@
                 <input type="text" name="nama_pesanan" value="{{ old('nama_pesanan') }}" required class="form-input" placeholder="Contoh: Pembuatan Baliho Festival">
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="display:grid; grid-template-columns: 1fr; gap: 16px;">
                 <div class="form-group">
                     <label class="form-label">Tanggal Pemesanan</label>
                     <input type="date" name="tanggal_pemesanan" value="{{ old('tanggal_pemesanan', date('Y-m-d')) }}" required class="form-input">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Deadline / Target Selesai</label>
-                    <input type="date" name="deadline" value="{{ old('deadline') }}" required class="form-input">
                 </div>
             </div>
 

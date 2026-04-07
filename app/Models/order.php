@@ -11,9 +11,9 @@ class order extends Model
     protected $table = 'pemesanan'; // pastikan nama tabel sesuai dengan yang ada di database
     protected $primaryKey = 'id_pemesanan';
     protected $fillable = [
-        'nama_pesanan', // ini harus sesuai dengan nama kolom di database ?
         'tanggal_pemesanan',
         'id_pelanggan',
+        'id_desainer',
         'status_pemesanan',
         'deskripsi_pemesanan',
         'deadline',
@@ -25,6 +25,11 @@ class order extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'id_pelanggan');
+    }
+
+    public function designer()
+    {
+        return $this->belongsTo(User::class, 'id_desainer', 'id');
     }
 
     public function desains()

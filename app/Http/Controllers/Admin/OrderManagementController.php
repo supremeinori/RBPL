@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Customer;
+use App\Models\User;
 
 class OrderManagementController extends Controller
 {
@@ -16,21 +17,21 @@ class OrderManagementController extends Controller
         // Search
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nama_pesanan', 'like', "%{$search}%")
-                  ->orWhere('status_pemesanan', 'like', "%{$search}%")
-                  ->orWhere('deadline', 'like', "%{$search}%")
-                  ->orWhere('tanggal_pemesanan', 'like', "%{$search}%")
-                  ->orWhereHas('customer', function($q) use ($search) {
-                      $q->where('nama', 'like', "%{$search}%");
-                  });
+                    ->orWhere('status_pemesanan', 'like', "%{$search}%")
+                    ->orWhere('deadline', 'like', "%{$search}%")
+                    ->orWhere('tanggal_pemesanan', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q) use ($search) {
+                        $q->where('nama', 'like', "%{$search}%");
+                    });
             });
         }
 
         // Sorting
-        // $sort = $request->get('sort', 'created_at');
-        // $direction = $request->get('direction', 'desc');
-        
+        // $sort = $request->input('sort', 'created_at');
+        // $direction = $request->input('direction', 'desc');
+
         // $sortField = match($sort) {
         //     'deadline' => 'deadline',
         //     'date' => 'tanggal_pemesanan',
@@ -57,7 +58,6 @@ class OrderManagementController extends Controller
             'id_pelanggan' => 'required',
             'nama_pesanan' => 'required',
             'tanggal_pemesanan' => 'required|date',
-            'deadline' => 'required|date',
             'status_pemesanan' => 'required',
             'deskripsi_pemesanan' => 'nullable'
         ]);
@@ -66,7 +66,6 @@ class OrderManagementController extends Controller
             'id_pelanggan' => $request->id_pelanggan,
             'nama_pesanan' => $request->nama_pesanan,
             'tanggal_pemesanan' => $request->tanggal_pemesanan,
-            'deadline' => $request->deadline,
             'status_pemesanan' => $request->status_pemesanan,
             'deskripsi_pemesanan' => $request->deskripsi_pemesanan
         ]);
@@ -77,17 +76,54 @@ class OrderManagementController extends Controller
     }
 
     public function show(Request $request, Order $order)
-{
-    $order->load('customer', 'desains');
+    {
+        $order->load('customer', 'desains', 'designer');
+        $customers = Customer::all();
+        $designers = User::where('role', 'desainer')->get();
 
-    $tab = $request->get('tab', 'informasi');
+        $tab = $request->input('tab', 'informasi');
 
-    return view('admin.orders.show', compact('order', 'tab'));
-}
+        return view('admin.orders.show', compact('order', 'tab', 'customers', 'designers'));
+    }
 
     public function update(Request $request, Order $order)
     {
-        // logic update
+        $request->validate([
+            'deskripsi_pemesanan' => 'nullable|string'
+        ]);
+
+        $order->update([
+            'deskripsi_pemesanan' => $request->deskripsi_pemesanan
+        ]);
+
+        return back()->with('success', 'Informasi pesanan berhasil diperbarui.');
+    }
+
+    // Fungsi khusus untuk mengeset deadline setelah order diproses (DP Lunas)
+    public function updateDeadline(Request $request, $id)
+    {
+        $request->validate([
+            'deadline' => 'required|date'
+        ]);
+
+        $order = Order::findOrFail($id);
+        $order->deadline = $request->deadline;
+        $order->save();
+
+        return back()->with('success', 'Deadline produksi berhasil ditetapkan.');
+    }
+
+    public function assignDesigner(Request $request, $id)
+    {
+        $request->validate([
+            'id_desainer' => 'required|exists:users,id'
+        ]);
+
+        $order = Order::findOrFail($id);
+        $order->id_desainer = $request->id_desainer;
+        $order->save();
+
+        return redirect()->route('admin.orders.show', [$id, 'tab' => 'desain'])->with('success', 'Desainer Penanggung Jawab berhasil di-assign.');
     }
 
     public function destroy(Order $order)

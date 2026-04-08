@@ -11,6 +11,7 @@ class Order extends Model
     protected $table = 'pemesanan'; // pastikan nama tabel sesuai dengan yang ada di database
     protected $primaryKey = 'id_pemesanan';
     protected $fillable = [
+        'nama_pesanan',
         'tanggal_pemesanan',
         'id_pelanggan',
         'id_desainer',

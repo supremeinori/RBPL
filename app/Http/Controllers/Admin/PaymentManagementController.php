@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\pembayaran;
-use App\Models\order;
+use App\Models\Pembayaran;
+use App\Models\Order;
 class PaymentManagementController extends Controller
 {
     public function storeKesepakatan(Request $request, $id)

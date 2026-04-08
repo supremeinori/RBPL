@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\desain;
-use App\Models\order;
+use App\Models\Desain;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class DesainController extends Controller

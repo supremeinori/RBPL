@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class pembayaran extends Model
+class Pembayaran extends Model
 {
     protected $table = 'pembayaran';
     protected $primaryKey = 'id_pembayaran';
@@ -24,7 +24,7 @@ class pembayaran extends Model
 
     public function order()
     {
-        return $this->belongsTo(order::class, 'id_pemesanan', 'id_pemesanan');
+        return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan');
     }
 
     public function validator()

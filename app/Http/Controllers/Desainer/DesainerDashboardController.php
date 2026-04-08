@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Desainer;
 
 use App\Http\Controllers\Controller;
-use App\Models\order;
+use App\Models\Order;
 
 class DesainerDashboardController extends Controller
 {

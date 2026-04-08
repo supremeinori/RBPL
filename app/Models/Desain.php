@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Models;
-use App\Models\order;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 
-class desain extends Model
+class Desain extends Model
 {
     protected $table = 'desain';
     protected $primaryKey = 'id_desain';

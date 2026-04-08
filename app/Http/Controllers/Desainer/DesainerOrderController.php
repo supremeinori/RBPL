@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Desainer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\desain;
-use App\Models\order;
+use App\Models\Desain;
+use App\Models\Order;
 
 class DesainerOrderController extends Controller
 {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Akuntan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\pembayaran;
+use App\Models\Pembayaran;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentValidationController extends Controller

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\customer;
-use App\Models\desain;
-class order extends Model
+use App\Models\Customer;
+use App\Models\Desain;
+class Order extends Model
 {
     protected $table = 'pemesanan'; // pastikan nama tabel sesuai dengan yang ada di database
     protected $primaryKey = 'id_pemesanan';
@@ -39,7 +39,7 @@ class order extends Model
 
     public function pembayarans()
     {
-        return $this->hasMany(pembayaran::class, 'id_pemesanan', 'id_pemesanan');
+        return $this->hasMany(Pembayaran::class, 'id_pemesanan', 'id_pemesanan');
     }
 }
 

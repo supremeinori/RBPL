@@ -3,24 +3,22 @@
 @section('subtitle', 'Daftar semua pelanggan yang terdaftar')
 
 @section('content')
-<div class="section-card">
-    <div class="section-header">
-        <h2 class="section-title">Data Pelanggan</h2>
+<div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+        <h2 style="margin:0; font-size: 18px; font-weight: 600;">Data Pelanggan</h2>
         <a href="{{ route('admin.customers.create') }}" class="btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            Tambah Pelanggan
+            + Tambah Pelanggan
         </a>
     </div>
 
     @if(session('success'))
-        <div style="padding: 16px 24px; background: rgba(16, 185, 129, 0.1); color: var(--success); border-bottom: 1px solid var(--border);">
+        <div class="alert-success">
             <strong>{{ session('success') }}</strong>
         </div>
     @endif
 
-    <div class="table-wrap">
-        <table>
-            <thead>
+    <table class="table">
+        <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nama Pelanggan</th>
@@ -45,12 +43,11 @@
                     <td colspan="5" style="text-align:center; padding:40px; color:var(--muted);">Data pelanggan masih kosong.</td>
                 </tr>
                 @endforelse
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 
     @if($customers->count() > 0 && method_exists($customers, 'links'))
-    <div style="padding: 16px 24px; border-top: 1px solid var(--border);">
+    <div style="margin-top: 16px;">
         {{ $customers->links() }}
     </div>
     @endif

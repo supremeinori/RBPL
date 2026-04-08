@@ -112,54 +112,132 @@
 
         /* Because white is dark blue now, and dark is white */
 
-        .section-card {
+        /* ── Komponen UI Global (Gunakan kelas ini di seluruh file Blade) ── */
+        
+        /* 1. Komponen Kartu (Box putih dengan border tipis) */
+        .card {
             background: var(--dark);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            overflow: hidden;
             margin-bottom: 24px;
-            animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 24px;
-            border-bottom: 1px solid var(--border);
         }
 
-        .section-title {
-            font-size: 16px;
+        /* 2. Komponen Tabel (Tampilan standar tabel data) */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
             font-weight: 600;
-            color: var(--white);
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            background: var(--mid);
+            text-transform: uppercase;
+        }
+        .table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
         }
 
+        /* 3. Komponen Tombol Primary (Tombol Aksi Utama) */
         .btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: var(--white);
-            /* White is primary text color, so button is dark */
-            color: var(--dark);
-            /* Text inside button is white */
-            border: none;
-            border-radius: 8px;
-            font-size: 13.5px;
+            background: var(--white); /* Gelap */
+            color: var(--dark); /* Terang */
+            border: 1px solid var(--white);
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1);
-            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
         }
-
         .btn-primary:hover {
             background: var(--light);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(15, 23, 42, 0.15);
+            color: var(--dark);
+        }
+
+        /* 4. Komponen Tombol Secondary (Tombol Batal / Netral) */
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--mid);
+            color: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        /* 5. Komponen Form Group & Input */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--light);
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--black);
+            color: var(--white);
+            font-size: 14px;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* 6. Alert Komponen (Pesan sukses / error) */
+        .alert-success {
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* 7. Tab Navigasi Sederhana */
+        .tabs-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+        .tab-link {
+            padding: 8px 16px;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-weight: 500;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        .tab-link.active {
+            background: var(--accent);
+            color: var(--dark); /* text putih */
+            border-color: var(--accent);
         }
 
         /* ── Sidebar Nav ── */
@@ -301,48 +379,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead th {
-            padding: 14px 18px;
-            text-align: left;
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid var(--border);
-            background: var(--mid);
-        }
-
-        tbody td {
-            padding: 16px 18px;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:hover {
-            background: rgba(0, 0, 0, 0.02);
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        /* ── /Akhir Komponen UI Global ── */
 
         @yield('styles')
     </style>

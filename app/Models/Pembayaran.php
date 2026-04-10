@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Order;
+use App\Models\User;
 
 class Pembayaran extends Model
 {
@@ -24,7 +26,7 @@ class Pembayaran extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan')->withTrashed();
+        return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan');
     }
 
     public function validator()

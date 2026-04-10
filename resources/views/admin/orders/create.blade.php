@@ -3,12 +3,13 @@
 @section('subtitle', 'Daftarkan projek / pesanan pelanggan baru')
 
 @section('styles')
-<style>
     /* Custom Dropdown Specific Styles */
     .custom-select-wrapper { 
         position: relative; 
         flex: 1; 
-        user-select: none; 
+        user-select: none;
+        height: 46px; 
+        display: block;
     }
     .custom-select-trigger { 
         display: flex; 
@@ -16,20 +17,22 @@
         align-items: center; 
         cursor: pointer; 
         background: var(--mid);
-        height: 46px; /* Fix height agar sinkron dengan tombol + */
+        height: 100%; 
+        width: 100%;
     }
     .custom-select-menu { 
         position: absolute; 
-        top: calc(100% + 8px); 
+        top: calc(100% + 5px); 
         left: 0; 
+        right: 0; 
         width: 100%; 
         background: #1a1a1a; 
         border: 1px solid var(--border); 
         border-radius: 10px; 
-        z-index: 9999; /* Pastikan di atas segalanya */
-        box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
+        z-index: 1000; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
         padding-bottom: 8px;
-        max-height: 350px;
+        max-height: 300px;
         overflow-y: auto;
     }
     .custom-option { 
@@ -50,15 +53,14 @@
         border-radius: 8px; 
         font-size: 13px; 
         outline: none; 
-        margin: 12px 12px 0;
-        width: calc(100% - 24px);
+        margin: 10px 10px 0;
+        width: calc(100% - 20px);
     }
     .search-input-box:focus { border-color: var(--accent); }
 
     /* Modal Khusus Halaman Create */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 10000; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000; }
     .modal-content { background: var(--dark); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
-</style>
 @endsection
 
 @section('content')
@@ -82,7 +84,7 @@
             
             <div class="form-group">
                 <label class="form-label">Pelanggan Pengorder</label>
-                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div style="display: flex; gap: 8px; align-items: center;">
                     <input type="hidden" name="id_pelanggan" id="input_id_pelanggan" required>
                     <!-- 1. Dropdown Pelanggan Custom -->
                     <div class="custom-select-wrapper" id="customSelectWrapper">
@@ -110,7 +112,7 @@
                         </div>
                     </div>
 
-                    <button type="button" onclick="openAddModal()" class="btn-primary" style="height: 46px; padding: 0 20px; font-size: 20px; flex-shrink: 0;" title="Tambah Pelanggan Baru">+</button>
+                    <button type="button" onclick="openAddModal()" class="btn-primary" style="height: 46px; padding: 0 16px; font-size: 18px; flex-shrink: 0;" title="Tambah Pelanggan Baru">+</button>
                 </div>
             </div>
 

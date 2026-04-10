@@ -10,12 +10,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $pendingPayments = pembayaran::with('order.customer')
+        $pendingPayments = Pembayaran::with('order.customer')
             ->where('status_verifikasi', 'pending')
             ->orderBy('tanggal_bayar', 'asc')
             ->get();
 
-        $histroypayment = pembayaran::with('order.customer')
+        $histroypayment = Pembayaran::with('order.customer')
             ->where('status_verifikasi', 'disetujui')
             ->orderBy('tanggal_bayar', 'asc')
             ->get();

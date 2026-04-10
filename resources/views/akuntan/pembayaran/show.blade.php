@@ -113,20 +113,33 @@
             </div>
         @endif
 
-        <div class="action-group">
-            <form action="{{ route('akuntan.pembayaran.approve', $pembayaran->id_pembayaran) }}" method="POST" id="formValid">
-                @csrf
-                <button type="button" onclick="confirmValid()" class="btn-success">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Nyatakan Valid
-                </button>
-            </form>
+        @if($pembayaran->status_verifikasi === 'pending')
+            <div class="action-group">
+                <form action="{{ route('akuntan.pembayaran.approve', $pembayaran->id_pembayaran) }}" method="POST" id="formValid">
+                    @csrf
+                    <button type="button" onclick="confirmValid()" class="btn-success">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Nyatakan Valid
+                    </button>
+                </form>
 
-            <button type="button" onclick="showRejectModal()" class="btn-danger">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                Tolak Pembayaran
-            </button>
-        </div>
+                <button type="button" onclick="showRejectModal()" class="btn-danger">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                    Tolak Pembayaran
+                </button>
+            </div>
+        @else
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                <div style="padding: 12px 20px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--muted); font-size: 14px; display: flex; align-items: center; gap: 10px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    @if($pembayaran->status_verifikasi === 'disetujui')
+                        Pembayaran ini sudah <span style="color: var(--success); font-weight: 700;">DISETUJUI</span> oleh {{ $pembayaran->validator->name ?? 'Sistem' }} pada {{ date('d/m/Y H:i', strtotime($pembayaran->tanggal_validasi)) }}
+                    @else
+                        Pembayaran ini sudah <span style="color: var(--danger); font-weight: 700;">DITOLAK</span> dengan alasan: <span style="color: var(--light);">{{ $pembayaran->alasan_penolakan }}</span>
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 

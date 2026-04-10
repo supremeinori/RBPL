@@ -5,12 +5,54 @@
 @section('styles')
 <style>
     /* Custom Dropdown Specific Styles */
-    .custom-select-wrapper { position: relative; flex: 1; user-select: none; }
-    .custom-select-trigger { display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--black); }
-    .custom-select-menu { position: absolute; top: 110%; left: 0; width: 100%; background: var(--dark); border: 1px solid var(--border); border-radius: 6px; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding-bottom: 8px; }
-    .custom-option { padding: 10px 14px; font-size: 14px; cursor: pointer; color: var(--light); transition: var(--transition); }
-    .custom-option:hover { background: rgba(37, 99, 235, 0.05); color: var(--accent); }
-    .search-input-box { background: var(--black); border: 1px solid var(--border); color: var(--light); padding: 8px 12px; border-radius: 6px; width: 100%; font-size: 13px; outline: none; }
+    .custom-select-wrapper { 
+        position: relative; 
+        flex: 1; 
+        user-select: none; 
+    }
+    .custom-select-trigger { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        cursor: pointer; 
+        background: var(--mid);
+    }
+    .custom-select-menu { 
+        position: absolute; 
+        top: calc(100% + 5px); 
+        left: 0; 
+        width: 100%; 
+        background: #1a1a1a; 
+        border: 1px solid var(--border); 
+        border-radius: 10px; 
+        z-index: 999; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+        padding-bottom: 8px;
+        max-height: 350px;
+        overflow-y: auto;
+    }
+    .custom-option { 
+        padding: 12px 16px; 
+        font-size: 14px; 
+        cursor: pointer; 
+        color: var(--light); 
+        transition: var(--transition);
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .custom-option:last-child { border-bottom: none; }
+    .custom-option:hover { background: rgba(255, 255, 255, 0.05); color: var(--white); }
+    .search-input-box { 
+        background: #000; 
+        border: 1px solid var(--border); 
+        color: var(--white); 
+        padding: 10px 14px; 
+        border-radius: 8px; 
+        width: 100%; 
+        font-size: 13px; 
+        outline: none; 
+        margin: 10px 10px 0;
+        width: calc(100% - 20px);
+    }
     .search-input-box:focus { border-color: var(--accent); }
 
     /* Modal Khusus Halaman Create */
@@ -50,6 +92,12 @@
                         </div>
                         
                         <div class="custom-select-menu" id="customSelectMenu" style="display: none;">
+                            <div style="padding: 0;">
+                                <input type="text" id="liveSearchInput" class="search-input-box" placeholder="🔍 Cari nama pelanggan..." autocomplete="off">
+                            </div>
+                            
+                            <hr style="border: none; border-top: 1px solid var(--border); margin: 12px 0 6px;">
+                            
                             <div id="recentList">
                                 @foreach($customers as $customer)
                                     <div class="custom-option" onclick="selectOption({{ $customer->id_pelanggan }}, '{{ htmlspecialchars($customer->nama, ENT_QUOTES) }}')">
@@ -58,12 +106,7 @@
                                 @endforeach
                             </div>
                             
-                            <hr style="border: none; border-top: 1px solid var(--border); margin: 6px 0;">
-                            
-                            <div style="padding: 0 10px;">
-                                <input type="text" id="liveSearchInput" class="search-input-box" placeholder="🔍 Cari nama pelanggan lain..." autocomplete="off">
-                                <div id="liveSearchResults" style="margin-top: 4px; max-height: 150px; overflow-y: auto;"></div>
-                            </div>
+                            <div id="liveSearchResults" style="max-height: 250px; overflow-y: auto;"></div>
                         </div>
                     </div>
 

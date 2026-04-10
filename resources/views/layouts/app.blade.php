@@ -18,9 +18,9 @@
         }
 
         :root {
-            --black: #f8f9fc;
+            --black: #00000022;
             /* Main background */
-            --dark: #ffffff;
+            --dark: #ffffff13;
             /* Cards / Sidebar */
             --mid: #f1f5f9;
             /* Hover / Table headers */
@@ -113,9 +113,10 @@
         /* Because white is dark blue now, and dark is white */
 
         /* ── Komponen UI Global (Gunakan kelas ini di seluruh file Blade) ── */
-        
+
         /* 1. Komponen Kartu (Box putih dengan border tipis) */
-        .card, .section-card {
+        .card,
+        .section-card {
             background: var(--dark);
             border: 1px solid var(--border);
             border-radius: var(--radius);
@@ -216,21 +217,48 @@
         }
 
         /* Color Variants for Stat Cards */
-        .stat-card.primary .stat-icon { background: rgba(37, 99, 235, 0.1); color: var(--accent); }
-        .stat-card.success .stat-icon { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-card.warning .stat-icon { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-card.danger .stat-icon { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-        
-        .stat-card.primary::after { background: var(--accent); }
-        .stat-card.success::after { background: var(--success); }
-        .stat-card.warning::after { background: var(--warning); }
-        .stat-card.danger::after { background: var(--danger); }
+        .stat-card.primary .stat-icon {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent);
+        }
+
+        .stat-card.success .stat-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-card.warning .stat-icon {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-card.danger .stat-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-card.primary::after {
+            background: var(--accent);
+        }
+
+        .stat-card.success::after {
+            background: var(--success);
+        }
+
+        .stat-card.warning::after {
+            background: var(--warning);
+        }
+
+        .stat-card.danger::after {
+            background: var(--danger);
+        }
 
         /* 2. Komponen Tabel (Tampilan standar tabel data) */
         .table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .table th {
             padding: 12px 16px;
             text-align: left;
@@ -241,6 +269,7 @@
             background: var(--mid);
             text-transform: uppercase;
         }
+
         .table td {
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
@@ -253,8 +282,10 @@
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: var(--white); /* Gelap */
-            color: var(--dark); /* Terang */
+            background: var(--white);
+            /* Gelap */
+            color: var(--dark);
+            /* Terang */
             border: 1px solid var(--white);
             border-radius: 6px;
             font-size: 13px;
@@ -262,6 +293,7 @@
             cursor: pointer;
             text-decoration: none;
         }
+
         .btn-primary:hover {
             background: var(--light);
             color: var(--dark);
@@ -282,11 +314,12 @@
             cursor: pointer;
             text-decoration: none;
         }
-        
+
         /* 5. Komponen Form Group & Input */
         .form-group {
             margin-bottom: 16px;
         }
+
         .form-label {
             display: block;
             margin-bottom: 6px;
@@ -294,6 +327,7 @@
             font-weight: 600;
             color: var(--light);
         }
+
         .form-control {
             width: 100%;
             padding: 10px 12px;
@@ -303,6 +337,7 @@
             color: var(--white);
             font-size: 14px;
         }
+
         .form-control:focus {
             outline: none;
             border-color: var(--accent);
@@ -327,6 +362,7 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 12px;
         }
+
         .tab-link {
             padding: 8px 16px;
             background: var(--dark);
@@ -337,9 +373,11 @@
             font-size: 13px;
             text-decoration: none;
         }
+
         .tab-link.active {
             background: var(--accent);
-            color: var(--dark); /* text putih */
+            color: var(--dark);
+            /* text putih */
             border-color: var(--accent);
         }
 

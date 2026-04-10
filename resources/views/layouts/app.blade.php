@@ -18,21 +18,21 @@
         }
 
         :root {
-            --black: #00000022;
+            --black: #0a0a0a;
             /* Main background */
-            --dark: #ffffff13;
+            --dark: #111111;
             /* Cards / Sidebar */
-            --mid: #f1f5f9;
+            --mid: #1c1c1c;
             /* Hover / Table headers */
-            --border: #e2e8f0;
-            --muted: #64748b;
-            --subtle: #475569;
-            --light: #334155;
+            --border: #1f1f1f;
+            --muted: #555555;
+            --subtle: #888888;
+            --light: #d4d4d4;
             /* Normal text */
-            --white: #0f172a;
+            --white: #ffffff;
             /* Headlines */
-            --accent: #2563eb;
-            /* Blue accent */
+            --accent: #3b82f6;
+            /* Blue accent for links/actions */
             --radius: 12px;
             --transition: 0.25s ease;
             --sidebar-w: 250px;
@@ -50,17 +50,10 @@
             color: var(--light);
         }
 
-        /* ── Decorative background grid ── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-            background-size: 32px 32px;
-            pointer-events: none;
-            z-index: 0;
+        /* ── Background polosan (No Grid) ── */
+        body {
+            background-color: var(--black);
+            color: var(--light);
         }
 
         /* ── Layout ── */
@@ -260,20 +253,21 @@
         }
 
         .table th {
-            padding: 12px 16px;
+            padding: 14px 16px;
             text-align: left;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--subtle);
             border-bottom: 1px solid var(--border);
-            background: var(--mid);
+            background: rgba(255, 255, 255, 0.02);
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-
         .table td {
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
             font-size: 14px;
+            color: var(--light);
         }
 
         /* 3. Komponen Tombol Primary (Tombol Aksi Utama) */
@@ -281,22 +275,20 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 16px;
+            padding: 8px 18px;
             background: var(--white);
-            /* Gelap */
-            color: var(--dark);
-            /* Terang */
-            border: 1px solid var(--white);
-            border-radius: 6px;
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
+            transition: var(--transition);
         }
-
         .btn-primary:hover {
             background: var(--light);
-            color: var(--dark);
+            transform: translateY(-1px);
         }
 
         /* 4. Komponen Tombol Secondary (Tombol Batal / Netral) */
@@ -330,17 +322,18 @@
 
         .form-control {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border: 1px solid var(--border);
-            border-radius: 6px;
-            background: var(--black);
+            border-radius: 8px;
+            background: var(--mid);
             color: var(--white);
             font-size: 14px;
+            transition: var(--transition);
         }
-
         .form-control:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: var(--subtle);
+            background: #222;
         }
 
         /* 6. Alert Komponen (Pesan sukses / error) */

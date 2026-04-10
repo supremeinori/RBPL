@@ -97,7 +97,7 @@
             <!-- 5. Input Deskripsi -->
             <div class="form-group">
                 <label class="form-label">Deskripsi / Detail Pesanan</label>
-                <textarea name="deskripsi_pemesanan" rows="5" class="form-control" placeholder="Tuliskan catatan teknis secara lengkap disini...">{{ old('deskripsi_pemesanan') }} required</textarea>
+                <textarea name="deskripsi_pemesanan" rows="5" required class="form-control" placeholder="Tuliskan catatan teknis secara lengkap disini...">{{ old('deskripsi_pemesanan') }} </textarea>
             </div>
 
             <!-- 6. Tombol Submit Utama -->

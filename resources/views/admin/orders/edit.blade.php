@@ -26,7 +26,7 @@
 @endphp
 
 @section('content')
-<div class="section-card" style="max-width: 600px;">
+<div class="section-card">
     <div class="section-header">
         <h2 class="section-title">Formulir Update Pesanan</h2>
     </div>

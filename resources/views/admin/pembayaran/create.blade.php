@@ -9,7 +9,7 @@
         $totalHarga = $order->total_harga ?? 0;
     @endphp
 
-    <div class="section-card" style="max-width: 600px;">
+    <div class="section-card">
         <div class="section-header">
             <h2 class="section-title">Form Input Pembayaran</h2>
         </div>

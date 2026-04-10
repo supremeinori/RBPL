@@ -21,7 +21,7 @@
 
 @section('content')
 <!-- Form Utama Card -->
-<div class="card" style="max-width: 600px;">
+<div class="card">
     <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 24px;">Formulir Pesanan Baru</h2>
 
     @if ($errors->any())

@@ -89,11 +89,13 @@ class OrderManagementController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->validate([
-            'deskripsi_pemesanan' => 'nullable|string'
+            'deskripsi_pemesanan' => 'nullable|string',
+            'deadline' => 'nullable|date'
         ]);
 
         $order->update([
-            'deskripsi_pemesanan' => $request->deskripsi_pemesanan
+            'deskripsi_pemesanan' => $request->deskripsi_pemesanan,
+            'deadline' => $request->deadline
         ]);
 
         return back()->with('success', 'Informasi pesanan berhasil diperbarui.');
@@ -124,6 +126,15 @@ class OrderManagementController extends Controller
         $order->save();
 
         return redirect()->route('admin.orders.show', [$id, 'tab' => 'desain'])->with('success', 'Desainer Penanggung Jawab berhasil di-assign.');
+    }
+
+    public function cancel($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status_pemesanan = 'dibatalkan';
+        $order->save();
+
+        return back()->with('success', 'Pesanan telah berhasil dibatalkan.');
     }
 
     public function destroy(Order $order)

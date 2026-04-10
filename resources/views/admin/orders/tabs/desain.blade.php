@@ -1,4 +1,15 @@
 <!-- Bagian: Manajemen Desain / Draft -->
+@if($order->status_pemesanan === 'dibatalkan')
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 16px; border-radius: 8px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div style="font-weight: 600;">⚠️ Pesanan ini telah dibatalkan. Seluruh aksi perubahan telah dinonaktifkan.</div>
+    </div>
+@endif
+
 @php
     $latestDesain = $order->desains->sortByDesc('draft_ke')->first();
     $isApproved   = $latestDesain && $latestDesain->status_desain === 'setuju';
@@ -25,21 +36,25 @@
         </div>
         
         <div style="width: 300px;">
-            <form action="{{ route('admin.orders.assignDesigner', $order->id_pemesanan) }}" method="POST">
-                @csrf
-                <label class="form-label">{{ $order->designer ? 'Ganti Desainer' : 'Tunjuk Desainer PIC' }}</label>
-                <div style="display: flex; gap: 8px;">
-                    <select name="id_desainer" required class="form-control">
-                        <option value="" disabled selected>-- Pilih Desainer --</option>
-                        @foreach($designers as $designer)
-                            <option value="{{ $designer->id }}" {{ $order->id_desainer == $designer->id ? 'selected' : '' }}>
-                                {{ $designer->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn-primary">Simpan</button>
-                </div>
-            </form>
+            @if($order->status_pemesanan !== 'dibatalkan')
+                <form action="{{ route('admin.orders.assignDesigner', $order->id_pemesanan) }}" method="POST">
+                    @csrf
+                    <label class="form-label">{{ $order->designer ? 'Ganti Desainer' : 'Tunjuk Desainer PIC' }}</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select name="id_desainer" required class="form-control">
+                            <option value="" disabled selected>-- Pilih Desainer --</option>
+                            @foreach($designers as $designer)
+                                <option value="{{ $designer->id }}" {{ $order->id_desainer == $designer->id ? 'selected' : '' }}>
+                                    {{ $designer->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn-primary">Simpan</button>
+                    </div>
+                </form>
+            @else
+                <p style="margin: 0; font-size: 12px; color: var(--muted); text-align: right;">Penugasan desainer dikunci (Pesanan Batal)</p>
+            @endif
         </div>
     </div>
 </div>
@@ -48,14 +63,16 @@
 <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
         <h3 style="font-size: 18px; margin: 0;">Histori Perancangan Draft</h3>
-        @if(!$isApproved)
-            @if($order->id_desainer)
-                <a href="{{ route('admin.desain.create', $order->id_pemesanan) }}" class="btn-primary">+ Ajukan Antrean Desain Baru</a>
+        @if($order->status_pemesanan !== 'dibatalkan')
+            @if(!$isApproved)
+                @if($order->id_desainer)
+                    <a href="{{ route('admin.desain.create', $order->id_pemesanan) }}" class="btn-primary">+ Ajukan Antrean Desain Baru</a>
+                @else
+                    <button class="btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">Tunjuk Desainer Dulu</button>
+                @endif
             @else
-                <button class="btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">Tunjuk Desainer Dulu</button>
+                <span class="alert-success" style="padding: 8px 16px; margin: 0;">Desain Telah Disetujui (Final)</span>
             @endif
-        @else
-            <span class="alert-success" style="padding: 8px 16px; margin: 0;">Desain Telah Disetujui (Final)</span>
         @endif
     </div>
 

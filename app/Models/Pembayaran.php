@@ -24,7 +24,7 @@ class Pembayaran extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan');
+        return $this->belongsTo(Order::class, 'id_pemesanan', 'id_pemesanan')->withTrashed();
     }
 
     public function validator()

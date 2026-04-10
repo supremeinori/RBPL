@@ -263,6 +263,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
+
         .table td {
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
@@ -286,6 +287,7 @@
             text-decoration: none;
             transition: var(--transition);
         }
+
         .btn-primary:hover {
             background: var(--light);
             transform: translateY(-1px);
@@ -330,6 +332,7 @@
             font-size: 14px;
             transition: var(--transition);
         }
+
         .form-control:focus {
             outline: none;
             border-color: var(--subtle);
@@ -541,15 +544,29 @@
                 @php $routeName = Request::route() ? Request::route()->getName() : ''; @endphp
 
                 <span class="nav-label">Main Menu</span>
-                <a href="/admin/dashboard" class="nav-item {{ Request::is('admin/dashboard') ? 'active' : '' }}">
+                @php
+                    $dashboardRoute = '#';
+                    $dashboardLabel = 'Dashboard';
+                    $dashboardIcon = '<rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />';
+
+                    if (Auth::user()->role === 'admin') {
+                        $dashboardRoute = route('admin.dashboard');
+                    } elseif (Auth::user()->role === 'desainer') {
+                        $dashboardRoute = route('desainer.dashboard');
+                    } elseif (Auth::user()->role === 'akuntan') {
+                        $dashboardRoute = route('akuntan.dashboard');
+                        $dashboardLabel = 'Validasi Pembayaran';
+                        $dashboardIcon = '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />';
+                    }
+                @endphp
+
+                <a href="{{ $dashboardRoute }}"
+                    class="nav-item {{ Request::is('admin/dashboard') || Request::is('desainer/dashboard') || Request::is('akuntan/dashboard') || Request::is('akuntan/pembayaran*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
+                        {!! $dashboardIcon !!}
                     </svg>
-                    Dashboard
+                    {{ $dashboardLabel }}
                 </a>
 
                 @if(Auth::user()->role === 'admin')
@@ -584,14 +601,15 @@
                 @endif
 
                 @if(Auth::user()->role === 'akuntan')
-                    <span class="nav-label">Finance</span>
-                    <a href="{{ route('akuntan.dashboard') }}"
-                        class="nav-item {{ Request::is('akuntan/dashboard*') || Request::is('akuntan/pembayaran*') ? 'active' : '' }}">
+                    <a href="{{ route('akuntan.laporan') }}"
+                        class="nav-item {{ Request::is('akuntan/laporan*') ? 'active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            <line x1="18" y1="20" x2="18" y2="10" />
+                            <line x1="12" y1="20" x2="12" y2="4" />
+                            <line x1="6" y1="20" x2="6" y2="14" />
                         </svg>
-                        Validasi Pembayaran
+                        Laporan Keuangan
                     </a>
                 @endif
             </nav>

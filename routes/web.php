@@ -33,6 +33,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('orders',    OrderManagementController::class);
     Route::post('orders/{id}/deadline', [OrderManagementController::class, 'updateDeadline'])->name('orders.updateDeadline');
     Route::post('orders/{id}/assign-designer', [OrderManagementController::class, 'assignDesigner'])->name('orders.assignDesigner');
+    Route::post('orders/{id}/cancel', [OrderManagementController::class, 'cancel'])->name('orders.cancel');
 
     // Desain (draft management — admin only creates/approves)
     Route::get('desain/create/{id}',    [DesainController::class, 'create'])->name('desain.create');
@@ -56,6 +57,7 @@ Route::middleware(['auth', 'role:desainer'])->prefix('desainer')->name('desainer
 
 use App\Http\Controllers\Akuntan\DashboardController as AkuntanDashboardController;
 use App\Http\Controllers\Akuntan\PaymentValidationController as AkuntanPaymentController;
+use App\Http\Controllers\Akuntan\LaporanKeuanganController;
 
 // Akuntan
 Route::middleware(['auth', 'role:akuntan'])->prefix('akuntan')->name('akuntan.')->group(function () {
@@ -63,6 +65,11 @@ Route::middleware(['auth', 'role:akuntan'])->prefix('akuntan')->name('akuntan.')
     Route::get('pembayaran/{id}', [AkuntanPaymentController::class, 'show'])->name('pembayaran.show');
     Route::post('pembayaran/{id}/approve', [AkuntanPaymentController::class, 'approve'])->name('pembayaran.approve');
     Route::post('pembayaran/{id}/reject', [AkuntanPaymentController::class, 'reject'])->name('pembayaran.reject');
+
+    // Laporan Keuangan
+    Route::get('laporan', [LaporanKeuanganController::class, 'index'])->name('laporan');
+    Route::get('laporan/pdf', [LaporanKeuanganController::class, 'downloadPdf'])->name('laporan.pdf');
+    Route::get('laporan/csv', [LaporanKeuanganController::class, 'downloadCsv'])->name('laporan.csv');
 });
 
 // Logout

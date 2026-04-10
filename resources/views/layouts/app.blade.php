@@ -115,13 +115,116 @@
         /* ── Komponen UI Global (Gunakan kelas ini di seluruh file Blade) ── */
         
         /* 1. Komponen Kartu (Box putih dengan border tipis) */
-        .card {
+        .card, .section-card {
             background: var(--dark);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             margin-bottom: 24px;
             padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
         }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* ── Stats Grid & Cards (Horizontal Layout) ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.04);
+            border-color: var(--accent);
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: var(--mid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+
+        .stat-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .stat-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        /* Color Variants for Stat Cards */
+        .stat-card.primary .stat-icon { background: rgba(37, 99, 235, 0.1); color: var(--accent); }
+        .stat-card.success .stat-icon { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .stat-card.warning .stat-icon { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .stat-card.danger .stat-icon { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        
+        .stat-card.primary::after { background: var(--accent); }
+        .stat-card.success::after { background: var(--success); }
+        .stat-card.warning::after { background: var(--warning); }
+        .stat-card.danger::after { background: var(--danger); }
 
         /* 2. Komponen Tabel (Tampilan standar tabel data) */
         .table {

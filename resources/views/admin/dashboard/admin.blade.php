@@ -4,31 +4,8 @@
 
 @section('styles')
 <style>
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 32px;
-    }
-    .stat-card {
-        background: var(--dark);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 24px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    }
-    .stat-title {
-        font-size: 13px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-    .stat-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--white);
+    .table-wrap {
+        overflow-x: auto;
     }
     .stat-badge {
         display: inline-block;
@@ -47,21 +24,41 @@
 
 @section('content')
 <div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-title">Total Pesanan</div>
-        <div class="stat-value">{{ $orders->count() }}</div>
+    <div class="stat-card primary">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <div class="stat-details">
+            <span class="stat-label">Total Pesanan</span>
+            <span class="stat-value">{{ $orders->count() }}</span>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-title">Pending</div>
-        <div class="stat-value" style="color: var(--warning);">{{ $orders->where('status_pemesanan','pending')->count() }}</div>
+    <div class="stat-card warning">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-details">
+            <span class="stat-label">Pending</span>
+            <span class="stat-value">{{ $orders->where('status_pemesanan','pending')->count() }}</span>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-title">Selesai</div>
-        <div class="stat-value" style="color: var(--success);">{{ $orders->where('status_pemesanan','selesai')->count() }}</div>
+    <div class="stat-card success">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="stat-details">
+            <span class="stat-label">Selesai</span>
+            <span class="stat-value">{{ $orders->where('status_pemesanan','selesai')->count() }}</span>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-title">Dibatalkan</div>
-        <div class="stat-value" style="color: var(--danger);">{{ $orders->where('status_pemesanan','dibatalkan')->count() }}</div>
+    <div class="stat-card danger">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="stat-details">
+            <span class="stat-label">Dibatalkan</span>
+            <span class="stat-value">{{ $orders->where('status_pemesanan','dibatalkan')->count() }}</span>
+        </div>
     </div>
 </div>
 
@@ -74,7 +71,7 @@
         </a>
     </div>
     <div class="table-wrap">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>

@@ -20,7 +20,7 @@
     @endif
 
     <div class="table-wrap">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Pesanan</th>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="table-wrap">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Pesanan</th>

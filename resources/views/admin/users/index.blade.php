@@ -19,7 +19,7 @@
     @endif
 
     <div class="table-wrap">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>

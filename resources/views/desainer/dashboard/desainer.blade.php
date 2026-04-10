@@ -4,44 +4,6 @@
 
 @section('styles')
 <style>
-    .stats-grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-        gap: 24px; 
-        margin-bottom: 32px; 
-    }
-    
-    .stat-card { 
-        background: var(--dark); 
-        padding: 24px; 
-        border-radius: var(--radius); 
-        border: 1px solid var(--border); 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
-        transition: transform var(--transition);
-    }
-
-    .stat-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .stat-label { 
-        font-size: 11px; 
-        color: var(--muted); 
-        text-transform: uppercase; 
-        font-weight: 700; 
-        letter-spacing: 0.05em;
-        margin-bottom: 8px; 
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .stat-value { 
-        font-size: 28px; 
-        font-weight: 800; 
-        color: var(--white); 
-    }
-
     .status-pill {
         padding: 4px 10px;
         border-radius: 6px;
@@ -53,36 +15,45 @@
         align-items: center;
         gap: 4px;
     }
+    .table-wrap {
+        overflow-x: auto;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-            Total Antrean
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
         </div>
-        <div class="stat-value">{{ $orders->count() }}</div>
+        <div class="stat-details">
+            <span class="stat-label">Total Antrean</span>
+            <span class="stat-value">{{ $orders->count() }}</span>
+        </div>
     </div>
     
-    <div class="stat-card">
-        <div class="stat-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Selesai (ACC Final)
+    <div class="stat-card success">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
-        <div class="stat-value" style="color: var(--success);">
-            {{ $orders->filter(function($o){ return $o->desains->sortByDesc('draft_ke')->first() && $o->desains->sortByDesc('draft_ke')->first()->status_desain === 'setuju'; })->count() }}
+        <div class="stat-details">
+            <span class="stat-label">Selesai (ACC Final)</span>
+            <span class="stat-value">
+                {{ $orders->filter(function($o){ return $o->desains->sortByDesc('draft_ke')->first() && $o->desains->sortByDesc('draft_ke')->first()->status_desain === 'setuju'; })->count() }}
+            </span>
         </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            Butuh Revisi
+    <div class="stat-card danger">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         </div>
-        <div class="stat-value" style="color: var(--danger);">
-            {{ $orders->filter(function($o){ return $o->desains->sortByDesc('draft_ke')->first() && $o->desains->sortByDesc('draft_ke')->first()->status_desain === 'revisi'; })->count() }}
+        <div class="stat-details">
+            <span class="stat-label">Butuh Revisi</span>
+            <span class="stat-value">
+                {{ $orders->filter(function($o){ return $o->desains->sortByDesc('draft_ke')->first() && $o->desains->sortByDesc('draft_ke')->first()->status_desain === 'revisi'; })->count() }}
+            </span>
         </div>
     </div>
 </div>
@@ -92,7 +63,7 @@
         <h2 class="section-title">Papan Tugas / Jobsheet Reklame</h2>
     </div>
     <div class="table-wrap">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID Invoice</th>

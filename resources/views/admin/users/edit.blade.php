@@ -60,6 +60,7 @@
             <div class="form-group">
                 <label class="form-label">Hak Akses (Role)</label>
                 <select name="role" required class="form-input">
+                    <option value="superadmin" {{ old('role', $user->role) == 'superadmin' ? 'selected' : '' }}>★ Super Admin</option>
                     <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="desainer" {{ old('role', $user->role) == 'desainer' ? 'selected' : '' }}>Desainer</option>
                     <option value="akuntan" {{ old('role', $user->role) == 'akuntan' ? 'selected' : '' }}>Akuntan</option>

@@ -36,17 +36,33 @@
                     <td>{{ $user->name }}</td>
                     <td style="color:var(--muted);">{{ $user->email }}</td>
                     <td>
-                        <span style="background:var(--mid); padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid var(--border);">{{ strtoupper($user->role) }}</span>
+                        @if($user->role === 'superadmin')
+                            <span style="background: rgba(192,132,252,0.15); color: #c084fc; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700; border: 1px solid rgba(192,132,252,0.3);">
+                                ★ SUPER ADMIN
+                            </span>
+                        @elseif($user->role === 'admin')
+                            <span style="background: rgba(59,130,246,0.12); color: #60a5fa; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid rgba(59,130,246,0.2);">ADMIN</span>
+                        @elseif($user->role === 'akuntan')
+                            <span style="background: rgba(16,185,129,0.12); color: #34d399; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid rgba(16,185,129,0.2);">AKUNTAN</span>
+                        @elseif($user->role === 'desainer')
+                            <span style="background: rgba(251,146,60,0.12); color: #fb923c; padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid rgba(251,146,60,0.2);">DESAINER</span>
+                        @else
+                            <span style="background:var(--mid); padding:4px 8px; border-radius:6px; font-size:12px; border:1px solid var(--border);">{{ strtoupper($user->role) }}</span>
+                        @endif
                     </td>
                     <td>
                         <div style="display:flex; gap:6px;">
-                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn-primary" style="padding: 4px 12px; font-size:12px;">Edit</a>
-                            @if(Auth::id() !== $user->id)
-                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini secara permanen?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-primary" style="padding: 4px 12px; font-size:12px; background:rgba(239, 68, 68, 0.1); color:var(--danger); box-shadow:none;">Hapus</button>
-                            </form>
+                            @if($user->role !== 'superadmin')
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn-primary" style="padding: 4px 12px; font-size:12px;">Edit</a>
+                                @if(Auth::id() !== $user->id)
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Hapus user {{ $user->name }}? Aksi ini tidak bisa dibatalkan.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-primary" style="padding: 4px 12px; font-size:12px; background:rgba(239, 68, 68, 0.1); color:var(--danger); box-shadow:none;">Hapus</button>
+                                </form>
+                                @endif
+                            @else
+                                <span style="font-size:12px; color:var(--muted); font-style:italic;">—Terlindungi—</span>
                             @endif
                         </div>
                     </td>

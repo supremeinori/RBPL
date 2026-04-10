@@ -16,12 +16,21 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, $role)
     {
         if (!Auth::check()) {
-            return redirect()->route('login'); // ini buat redirect ke halaman login kalau
-    }   if (Auth::user()->role !== $role) {
-            abort(403, 'Unauthorized'); // ini buat ngasih error 403 kalau role tidak sesuai
-            return redirect()->route('login'); // ini buat redirect ke halaman login kalau role tidak sesuai
-    }
-    return $next($request); // ini buat lanjut ke request berikutnya kalau role sesuai
+            return redirect()->route('login');
+        }
+
+        $userRole = Auth::user()->role;
+
+        // Super Admin bisa mengakses semua route
+        if ($userRole === 'superadmin') {
+            return $next($request);
+        }
+
+        if ($userRole !== $role) {
+            abort(403, 'Unauthorized');
+        }
+
+        return $next($request);
     }
 
 }

@@ -59,6 +59,7 @@
                 <label class="form-label">Hak Akses (Role)</label>
                 <select name="role" required class="form-input">
                     <option value="" disabled selected>Pilih Role</option>
+                    <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>★ Super Admin</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="desainer" {{ old('role') == 'desainer' ? 'selected' : '' }}>Desainer</option>
                     <option value="akuntan" {{ old('role') == 'akuntan' ? 'selected' : '' }}>Akuntan</option>

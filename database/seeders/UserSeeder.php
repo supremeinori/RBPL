@@ -30,10 +30,19 @@ class UserSeeder extends Seeder
     ]);
 
     User::create([
-        'name' => 'Akuntan',
-        'email' => 'akuntan@email.com',
+        'name'     => 'Akuntan',
+        'email'    => 'akuntan@email.com',
         'password' => Hash::make('112262'),
-        'role' => 'akuntan',
+        'role'     => 'akuntan',
     ]);
+
+    User::firstOrCreate(
+        ['email' => 'superadmin@email.com'],
+        [
+            'name'     => 'Super Admin',
+            'password' => Hash::make('super123'),
+            'role'     => 'superadmin',
+        ]
+    );
     }
 }

@@ -25,11 +25,11 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->middleware(['auth', 'role:admin'])
     ->name('admin.dashboard');
 
+// Admin + Super Admin (shared operational routes)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('customers', CustomerManagementController::class);
     Route::get('customers/search', [CustomerManagementController::class, 'searchApi'])->name('customers.search');
     Route::post('customers/api-store', [CustomerManagementController::class, 'storeApi'])->name('customers.storeApi');
-    Route::resource('users',     UserManagementController::class);
-    Route::resource('customers', CustomerManagementController::class);
     Route::resource('orders',    OrderManagementController::class);
     Route::post('orders/{id}/deadline', [OrderManagementController::class, 'updateDeadline'])->name('orders.updateDeadline');
     Route::post('orders/{id}/assign-designer', [OrderManagementController::class, 'assignDesigner'])->name('orders.assignDesigner');
@@ -45,6 +45,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('orders/{id}/kesepakatan', [PaymentManagementController::class, 'storeKesepakatan'])->name('orders.storeKesepakatan');
     Route::get('pembayaran/create/{id}',  [PaymentManagementController::class, 'create'])->name('pembayaran.create');
     Route::post('pembayaran/store/{id}',  [PaymentManagementController::class, 'store'])->name('pembayaran.store');
+});
+
+// Super Admin only — user management & backup
+use App\Http\Controllers\Admin\BackupController;
+Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserManagementController::class);
+    Route::get('backup', [BackupController::class, 'download'])->name('backup');
 });
 
 // Desainer

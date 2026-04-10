@@ -37,21 +37,20 @@ class UserManagementController extends Controller
         return view('admin.users.create');
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'role' => 'required|in:admin,desainer,akuntan',
+            'role'     => 'required|in:admin,desainer,akuntan,superadmin',
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role'     => $request->role,
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
@@ -59,23 +58,34 @@ class UserManagementController extends Controller
 
     public function edit(User $user)
     {
+        // Tidak boleh edit akun superadmin lain
+        if ($user->role === 'superadmin' && $user->id !== auth()->id()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Akun Super Admin tidak dapat diubah.');
+        }
+
         return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
+        // Tidak boleh edit akun superadmin lain
+        if ($user->role === 'superadmin' && $user->id !== auth()->id()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Akun Super Admin tidak dapat diubah.');
+        }
+
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6',
-            'role' => 'required|in:admin,desainer,akuntan',
+            'role'     => 'required|in:admin,desainer,akuntan,superadmin',
         ]);
 
-
         $user->update([
-            'name' => $request->name,
+            'name'  => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role'  => $request->role,
         ]);
 
         if ($request->password) {
@@ -89,16 +99,21 @@ class UserManagementController extends Controller
 
     public function destroy(User $user)
     {
-        // Cegah admin utama (misal ID = 1)
-        if ($user->id == 1) {
+        // Tidak boleh hapus akun superadmin sama sekali
+        if ($user->role === 'superadmin') {
             return redirect()->route('admin.users.index')
-                ->with('error', 'Admin utama tidak bisa dihapus.');
+                ->with('error', 'Akun Super Admin tidak dapat dihapus.');
         }
 
-        $user->delete(); // ini otomatis soft delete
+        // Tidak boleh hapus diri sendiri
+        if ($user->id === auth()->id()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
+
+        $user->delete();
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil dihapus.');
     }
-
 }

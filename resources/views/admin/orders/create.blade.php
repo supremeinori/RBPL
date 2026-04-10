@@ -16,17 +16,18 @@
         align-items: center; 
         cursor: pointer; 
         background: var(--mid);
+        height: 46px; /* Fix height agar sinkron dengan tombol + */
     }
     .custom-select-menu { 
         position: absolute; 
-        top: calc(100% + 5px); 
+        top: calc(100% + 8px); 
         left: 0; 
         width: 100%; 
         background: #1a1a1a; 
         border: 1px solid var(--border); 
         border-radius: 10px; 
-        z-index: 999; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+        z-index: 9999; /* Pastikan di atas segalanya */
+        box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
         padding-bottom: 8px;
         max-height: 350px;
         overflow-y: auto;
@@ -47,16 +48,15 @@
         color: var(--white); 
         padding: 10px 14px; 
         border-radius: 8px; 
-        width: 100%; 
         font-size: 13px; 
         outline: none; 
-        margin: 10px 10px 0;
-        width: calc(100% - 20px);
+        margin: 12px 12px 0;
+        width: calc(100% - 24px);
     }
     .search-input-box:focus { border-color: var(--accent); }
 
     /* Modal Khusus Halaman Create */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 10000; }
     .modal-content { background: var(--dark); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
 </style>
 @endsection
@@ -82,7 +82,7 @@
             
             <div class="form-group">
                 <label class="form-label">Pelanggan Pengorder</label>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
                     <input type="hidden" name="id_pelanggan" id="input_id_pelanggan" required>
                     <!-- 1. Dropdown Pelanggan Custom -->
                     <div class="custom-select-wrapper" id="customSelectWrapper">
@@ -110,7 +110,7 @@
                         </div>
                     </div>
 
-                    <button type="button" onclick="openAddModal()" class="btn-primary" style="margin-top: 0; padding: 0 16px; font-size: 18px; box-shadow: none;" title="Tambah Pelanggan Baru">+</button>
+                    <button type="button" onclick="openAddModal()" class="btn-primary" style="height: 46px; padding: 0 20px; font-size: 20px; flex-shrink: 0;" title="Tambah Pelanggan Baru">+</button>
                 </div>
             </div>
 

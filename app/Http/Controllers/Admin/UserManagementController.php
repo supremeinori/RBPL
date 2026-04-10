@@ -18,10 +18,10 @@ class UserManagementController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        $sort = $request->get('sort', 'name');
-        $direction = $request->get('direction', 'asc');
+        $sort = $request->input('sort', 'name');
+        $direction = $request->input('direction', 'asc');
 
-        $sortField = match($sort) {
+        $sortField = match ($sort) {
             'name' => 'name',
             'role' => 'role',
             default => 'name'
@@ -33,9 +33,9 @@ class UserManagementController extends Controller
     }
 
     public function create()
-{
-    return view('admin.users.create');
-}
+    {
+        return view('admin.users.create');
+    }
 
 
     public function store(Request $request)
@@ -47,7 +47,7 @@ class UserManagementController extends Controller
             'role' => 'required|in:admin,desainer,akuntan',
         ]);
 
-        \App\Models\User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -57,7 +57,7 @@ class UserManagementController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
     }
 
-   public function edit(User $user)
+    public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
@@ -88,17 +88,17 @@ class UserManagementController extends Controller
     }
 
     public function destroy(User $user)
-{
-    // Cegah admin utama (misal ID = 1)
-    if ($user->id == 1) {
+    {
+        // Cegah admin utama (misal ID = 1)
+        if ($user->id == 1) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Admin utama tidak bisa dihapus.');
+        }
+
+        $user->delete(); // ini otomatis soft delete
+
         return redirect()->route('admin.users.index')
-            ->with('error', 'Admin utama tidak bisa dihapus.');
+            ->with('success', 'User berhasil dihapus.');
     }
-
-    $user->delete(); // ini otomatis soft delete
-
-    return redirect()->route('admin.users.index')
-        ->with('success', 'User berhasil dihapus.');
-}
 
 }

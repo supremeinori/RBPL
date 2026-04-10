@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 
 class CustomerManagementController extends Controller
-{   
-    
+{
+
     public function index(Request $request)
     {
         $query = customer::query();
@@ -18,17 +18,17 @@ class CustomerManagementController extends Controller
             $query->where('nama', 'like', "%{$search}%");
         }
 
-        $sort = $request->get('sort', 'nama');
-        $direction = $request->get('direction', 'asc');
+        $sort = $request->input('sort', 'nama');
+        $direction = $request->input('direction', 'asc');
 
-        $sortField = match($sort) {
+        $sortField = match ($sort) {
             'nama' => 'nama',
             'created' => 'created_at',
             default => 'nama'
         };
 
         $customers = $query->orderBy($sortField, $direction)->paginate(10)->withQueryString();
-        
+
         return view('admin.customers.index', compact('customers'));
     }
 
@@ -36,28 +36,28 @@ class CustomerManagementController extends Controller
     {
         return view('admin.customers.create');
     }
-   
 
-   public function store(Request $request)
-{
-    $request->validate([
-        'nama' => 'required',
-        'alamat' => 'required',
-        'no_telp' => 'required',
-    ]);
 
-    Customer::create([
-        'nama' => $request->nama,
-        'alamat' => $request->alamat,
-        'no_telp' => $request->no_telp
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+        ]);
 
-    return redirect()
-        ->route('admin.customers.index')
-        ->with('success', 'Customer berhasil ditambahkan.');
-}
+        Customer::create([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_telp' => $request->no_telp
+        ]);
 
- public function edit(customer $customer)
+        return redirect()
+            ->route('admin.customers.index')
+            ->with('success', 'Customer berhasil ditambahkan.');
+    }
+
+    public function edit(customer $customer)
     {
         return view('admin.customers.edit', compact('customer'));
     }
@@ -83,7 +83,7 @@ class CustomerManagementController extends Controller
 
     public function searchApi(Request $request)
     {
-        $search = $request->get('q');
+        $search = $request->input('q');
         $customers = Customer::where('nama', 'like', "%{$search}%")
             ->limit(10)
             ->get(['id_pelanggan', 'nama']);

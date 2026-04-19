@@ -55,9 +55,9 @@
                     <label class="form-label">Status Pembayaran</label>
                     <select name="status_pembayaran" class="form-control">
                         <option value="semua">Semua</option>
-                        <option value="disetujui" {{ ($filters['status_pembayaran'] ?? '') === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                        <option value="valid" {{ ($filters['status_pembayaran'] ?? '') === 'valid' ? 'selected' : '' }}>Valid</option>
                         <option value="menunggu" {{ ($filters['status_pembayaran'] ?? '') === 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                        <option value="ditolak" {{ ($filters['status_pembayaran'] ?? '') === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                        <option value="tidak_valid" {{ ($filters['status_pembayaran'] ?? '') === 'tidak_valid' ? 'selected' : '' }}>Tidak Valid</option>
                     </select>
                 </div>
 
@@ -193,10 +193,10 @@
                                 </td>
                                 <td style="color: var(--subtle); font-size: 13px;">{{ $bayar->metode_pembayaran ?? '-' }}</td>
                                 <td>
-                                    @if($bayar->status_verifikasi === 'disetujui')
-                                        <span style="color: var(--success); font-weight: 600; font-size: 12px;">✓ Disetujui</span>
-                                    @elseif($bayar->status_verifikasi === 'ditolak')
-                                        <span style="color: var(--danger); font-weight: 600; font-size: 12px;">✗ Ditolak</span>
+                                    @if($bayar->status_verifikasi === 'valid')
+                                        <span style="color: var(--success); font-weight: 600; font-size: 12px;">✓ Valid</span>
+                                    @elseif($bayar->status_verifikasi === 'tidak_valid')
+                                        <span style="color: var(--danger); font-weight: 600; font-size: 12px;">✗ Tidak Valid</span>
                                     @else
                                         <span style="color: var(--warning); font-weight: 600; font-size: 12px;">⌛ Menunggu</span>
                                     @endif

@@ -121,7 +121,7 @@ class LaporanKeuanganController extends Controller
 
         $transaksi = $query->orderBy('tanggal_bayar', 'asc')->get();
 
-        $approved = $transaksi->where('status_verifikasi', 'disetujui');
+        $approved = $transaksi->where('status_verifikasi', 'valid');
 
         $ringkasan = [
             'total_transaksi'  => $transaksi->count(),

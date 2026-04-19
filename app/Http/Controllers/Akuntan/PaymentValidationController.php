@@ -20,7 +20,7 @@ class PaymentValidationController extends Controller
     {
         $pembayaran = pembayaran::with('order')->findOrFail($id);
 
-        $pembayaran->status_verifikasi = 'disetujui';
+        $pembayaran->status_verifikasi = 'valid';
         $pembayaran->id_validator = Auth::id();
         $pembayaran->tanggal_validasi = now();
         $pembayaran->save();
@@ -33,7 +33,7 @@ class PaymentValidationController extends Controller
         }
 
         // Pengecekan Pelunasan Keseluruhan
-        $totalTerbayar = $order->pembayarans()->where('status_verifikasi', 'disetujui')->sum('nominal');
+        $totalTerbayar = $order->pembayarans()->where('status_verifikasi', 'valid')->sum('nominal');
         $desainApproved = $order->desains()->where('status_desain', 'setuju')->exists();
 
         if ($totalTerbayar >= $order->total_harga && $desainApproved) {
@@ -51,7 +51,7 @@ class PaymentValidationController extends Controller
         ]);
 
         $pembayaran = pembayaran::findOrFail($id);
-        $pembayaran->status_verifikasi = 'ditolak';
+        $pembayaran->status_verifikasi = 'tidak_valid';
         $pembayaran->id_validator = Auth::id();
         $pembayaran->tanggal_validasi = now();
         $pembayaran->alasan_penolakan = $request->alasan;

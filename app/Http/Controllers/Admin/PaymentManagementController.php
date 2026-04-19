@@ -36,11 +36,11 @@ class PaymentManagementController extends Controller
 
         $hasdp = $order->pembayarans
             ->where('jenis_pembayaran', 'dp')
-            ->where('status_verifikasi', 'disetujui')
+            ->where('status_verifikasi', 'valid')
             ->count() > 0;
 
         // Cek total bayar yg sudah masuk
-        $totalDibayar = $order->pembayarans()->where('status_verifikasi', '!=', 'ditolak')->sum('nominal');
+        $totalDibayar = $order->pembayarans()->where('status_verifikasi', '!=', 'tidak_valid')->sum('nominal');
 
         if ($order->total_harga && $totalDibayar >= $order->total_harga) {
             return redirect()->route('admin.orders.show', [$order->id_pemesanan, 'tab' => 'pembayaran'])->with('success', 'Pembayaran sudah lunas / mencapai harga sepakat.');
@@ -60,7 +60,7 @@ class PaymentManagementController extends Controller
 
         $order = order::findOrFail($id);
 
-        $totalDibayar = $order->pembayarans()->where('status_verifikasi', '!=', 'ditolak')->sum('nominal');
+        $totalDibayar = $order->pembayarans()->where('status_verifikasi', '!=', 'tidak_valid')->sum('nominal');
         $sisaTagihan = $order->total_harga - $totalDibayar;
 
         if ($request->nominal > $sisaTagihan) {

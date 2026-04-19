@@ -53,7 +53,7 @@
 
 <div>
     @php
-        $totalDibayar = $order->pembayarans->where('status_verifikasi', '!=', 'ditolak')->sum('nominal');
+        $totalDibayar = $order->pembayarans->where('status_verifikasi', '!=', 'tidak_valid')->sum('nominal');
     @endphp
     
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
@@ -96,9 +96,9 @@
                         <td>{{ $bayar->metode_pembayaran ?? 'Penerimaan Kasir Manual' }}</td>
                         <td style="font-weight:700; color:var(--light);">Rp {{ number_format($bayar->nominal, 0, ',', '.') }}</td>
                         <td>
-                            @if($bayar->status_verifikasi === 'disetujui')
+                            @if($bayar->status_verifikasi === 'valid')
                                 <span style="color:var(--success); font-weight:600;">✓ Diverifikasi Akuntan</span>
-                            @elseif($bayar->status_verifikasi === 'ditolak')
+                            @elseif($bayar->status_verifikasi === 'tidak_valid')
                                 <span style="color:var(--danger); font-weight:600;">✗ Tertolak Kas ({{ $bayar->alasan_penolakan ?? 'Tidak Layak' }})</span>
                             @else
                                 <span style="color:var(--warning); font-weight:600;">⌛ Pengecekan Rekening</span>

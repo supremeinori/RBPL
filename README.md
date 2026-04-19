@@ -1,59 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# RBPL - Sistem Manajemen Order & Desain
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**RBPL** adalah aplikasi berbasis web yang dirancang untuk mengelola proses pemesanan (order), desain, dan pembayaran dalam alur kerja percetakan atau agensi desain. Aplikasi ini mempermudah kolaborasi antara Admin, Desainer, dan Akuntan dalam satu platform yang terintegrasi.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Manajemen Pelanggan**: Penyimpanan data pelanggan yang terintegrasi.
+- **Manajemen Order**: Pembuatan dan pelacakan status pesanan secara real-time.
+- **Iterasi Desain**: Alur kerja peninjauan desain antara Admin dan Desainer.
+- **Validasi Pembayaran**: Sistem konfirmasi pembayaran oleh Akuntan.
+- **Laporan Keuangan**: Rekapitulasi pendapatan dalam format PDF dan CSV.
+- **Backup Data**: Fitur pencadangan basis data (untuk Super Admin).
+- **Role-Based Access Control (RBAC)**: Pembatasan akses sesuai dengan peran masing-masing pengguna.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 👥 Peran Pengguna (Roles)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+| Role | Deskripsi Singkat |
+| :--- | :--- |
+| **Super Admin** | Memiliki akses penuh, mengelola akun user lain, dan melakukan backup sistem. |
+| **Admin** | Membuat order baru, mengelola pelanggan, dan menyetujui/merevisi desain dari Desainer. |
+| **Desainer** | Melihat daftar order yang ditugaskan dan mengunggah draft desain untuk ditinjau. |
+| **Akuntan** | Memvalidasi bukti pembayaran dari pelanggan dan mengunduh laporan keuangan. |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🔄 Alur Kerja Inti
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Order Baru**: Admin membuat pesanan untuk pelanggan.
+2. **Penugasan**: Admin menugaskan Desainer untuk mengerjakan desain pesanan tersebut.
+3. **Drafting**: Desainer mengunggah draft desain melalui dashboard mereka.
+4. **Approval**: Admin meninjau desain. Jika sesuai, desain disetujui; jika tidak, Admin meminta revisi.
+5. **Pembayaran**: Setelah desain oke, Admin mencatat kesepakatan harga. Pelanggan melakukan pembayaran.
+6. **Validasi**: Akuntan memverifikasi pembayaran. Jika valid, status pesanan berubah menjadi lunas/selesai.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🛠️ Persyaratan Sistem
 
-## Contributing
+- **PHP**: ^8.1
+- **Composer**: ^2.0
+- **Database**: MariaDB / MySQL
+- **Node.js**: ^18.0 (untuk kompilasi asset Vite)
+- **Local Server**: Laragon (disarankan), XAMPP, atau Laravel Herd.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## ⚙️ Instalasi Lokal
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Ikuti langkah-langkah berikut untuk menjalankan projek di komputer lokal Anda:
 
-## Security Vulnerabilities
+1. **Clone Repositori**
+   ```bash
+   git clone https://github.com/supremeinori/RBPL.git
+   cd RBPL
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. **Instal Dependensi PHP**
+   ```bash
+   composer install
+   ```
 
-## License
+3. **Instal Dependensi Frontend**
+   ```bash
+   npm install
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4. **Konfigurasi Environment**
+   Salin file `.env.example` menjadi `.env` dan sesuaikan pengaturan database Anda.
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Migrasi & Seeding**
+   Buat database baru di MySQL, lalu jalankan perintah berikut:
+   ```bash
+   php artisan migrate --seed
+   ```
+
+6. **Build Asset**
+   ```bash
+   npm run dev
+   # atau untuk produksi
+   npm run build
+   ```
+
+7. **Jalankan Server**
+   ```bash
+   php artisan serve
+   ```
+   Akses di: `http://localhost:8000`
+
+---
+
+## 🌐 Panduan Deployment (VPS)
+
+Untuk men-deploy aplikasi ini ke VPS (Ubuntu/Nginx):
+
+1. **Setup Server**: Pastikan PHP 8.1+, Nginx, dan MySQL sudah terinstal.
+2. **Setup Folder**: Clone repositori ke `/var/www/rbpl`.
+3. **Permissions**: Pastikan folder `storage` dan `bootstrap/cache` bisa ditulis oleh user `www-data`.
+   ```bash
+   sudo chown -R www-data:www-data /var/www/rbpl/storage /var/www/rbpl/bootstrap/cache
+   ```
+4. **Nginx Config**: Buat konfigurasi block untuk mengarahkan ke folder `public`.
+5. **SSL**: Gunakan `Certbot` untuk mendapatkan SSL gratis dari Let's Encrypt.
+6. **Optimasi**: Jalankan perintah optimasi Laravel:
+   ```bash
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
+
+---
+
+## 📄 Lisensi
+
+Projek ini mengikuti lisensi [MIT](https://opensource.org/licenses/MIT).

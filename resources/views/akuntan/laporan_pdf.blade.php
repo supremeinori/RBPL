@@ -112,10 +112,10 @@
                     </td>
                     <td>{{ $bayar->metode_pembayaran ?? '-' }}</td>
                     <td>
-                        @if($bayar->status_verifikasi === 'disetujui')
-                            <span class="badge-ok">✓ Disetujui</span>
-                        @elseif($bayar->status_verifikasi === 'ditolak')
-                            <span class="badge-no">✗ Ditolak</span>
+                        @if($bayar->status_verifikasi === 'valid')
+                            <span class="badge-ok">✓ Valid</span>
+                        @elseif($bayar->status_verifikasi === 'tidak_valid')
+                            <span class="badge-no">✗ Tidak Valid</span>
                         @else
                             <span class="badge-wait">⌛ Menunggu</span>
                         @endif

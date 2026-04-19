@@ -16,7 +16,7 @@ class DashboardController extends Controller
             ->get();
 
         $histroypayment = Pembayaran::with('order.customer')
-            ->where('status_verifikasi', 'disetujui')
+            ->where('status_verifikasi', 'valid')
             ->orderBy('tanggal_bayar', 'asc')
             ->get();
 

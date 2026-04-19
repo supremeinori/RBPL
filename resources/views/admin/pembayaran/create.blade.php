@@ -4,7 +4,7 @@
 
 @section('content')
     @php
-        $totalDibayar = $order->pembayarans->where('status_verifikasi', '!=', 'ditolak')->sum('nominal');
+        $totalDibayar = $order->pembayarans->where('status_verifikasi', '!=', 'tidak_valid')->sum('nominal');
         $sisaTagihan = $order->total_harga - $totalDibayar;
         $totalHarga = $order->total_harga ?? 0;
     @endphp

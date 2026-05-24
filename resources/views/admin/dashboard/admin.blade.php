@@ -90,7 +90,7 @@
                     <td>{{ $order->nama_pesanan }}</td>
                     <td>{{ $order->customer->nama ?? '-' }}</td>
                     <td>{{ date('d M Y', strtotime($order->tanggal_pemesanan)) }}</td>
-                    <td><span class="stat-badge" style="background:var(--mid);">{{ date('d M Y', strtotime($order->deadline)) }}</span></td>
+                    <td><span class="stat-badge" style="background:var(--mid);">{{ $order->deadline ? date('d M Y', strtotime($order->deadline)) : '-' }}</span></td>
                     <td>
                         @if($order->status_pemesanan === 'pending')
                             <span class="stat-badge badge-warning">Pending</span>

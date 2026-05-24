@@ -14,7 +14,6 @@ class DesainerDashboardController extends Controller
             $q->orderBy('draft_ke', 'desc');
         }])
         ->where('id_desainer', auth()->id())
-        ->whereHas('desains')
         ->get();
 
         return view('desainer.dashboard.desainer', compact('orders'));

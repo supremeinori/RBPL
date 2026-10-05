@@ -1,0 +1,10 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/Http/Controllers/Admin/OrderManagementController.php
+        - app/Models/order.php
+        - app/Models/customer.php
+        - app/Http/Middleware/RoleMiddleware.php
+    level: 5
